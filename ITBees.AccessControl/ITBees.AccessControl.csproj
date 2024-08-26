@@ -10,18 +10,16 @@
   <ItemGroup>
     <PackageReference Include="ITBees.Fas.Setup" Version="8.0.5" />
     <PackageReference Include="ITBees.Interfaces" Version="8.0.15" />
-    <PackageReference Include="ITBees.Models" Version="8.0.39" />
+    <PackageReference Include="ITBees.Models" Version="8.0.41" />
+    <PackageReference Include="ITBees.UserManager" Version="8.0.111" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Stripe.net" Version="45.8.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ITBees.RestfulApiControllers" Version="8.0.14" />
+    <PackageReference Include="ITBees.RestfulApiControllers" Version="8.0.20" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Setup\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
     <Folder Include="Translations\" />
   </ItemGroup>
 
