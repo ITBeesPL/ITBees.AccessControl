@@ -21,9 +21,9 @@ public class UnauthorizedAccessCardLogController : RestfulControllerBase<Unautho
     }
 
     [HttpGet]
-    public IActionResult Get(int page, int pageSize, string sortCoulum, SortOrder sortOrder)
+    public IActionResult Get(int page, int pageSize, string sortColumn, SortOrder sortOrder)
     {
-        return ReturnOkResult(()=>_unauthorizedAccessCardLogsService.GetLogs(page, pageSize, sortCoulum, sortOrder));
+        return ReturnOkResult(()=>_unauthorizedAccessCardLogsService.GetLogs(page, pageSize, sortColumn, sortOrder));
     }
 
 }

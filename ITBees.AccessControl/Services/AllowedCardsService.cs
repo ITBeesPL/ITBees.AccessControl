@@ -24,18 +24,23 @@ public class AllowedCardsService : IAllowedCardsService
         _aspCurrentUserService = aspCurrentUserService;
     }
 
-    public AllowedAccessCardVm RegisterCard(AllowedAccessCardIm allowedAccessCardIm)
+    public AllowedAccessCardsVm RegisterCard(AllowedAccessCardsIm allowedAccessCards)
     {
         try
         {
-            var result = _allowedAccessCardRwRepo.InsertData(new AllowedAccessCard()
+            var result = new List<AllowedAccessCard>();
+            foreach (var allowedAccessCardIm in allowedAccessCards.AllowedAccessCards)
             {
-                CardId = allowedAccessCardIm.CardId,
-                CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
-                Created = DateTime.Now
-            });
+                result.Add(_allowedAccessCardRwRepo.InsertData(new AllowedAccessCard()
+                {
+                    CardId = allowedAccessCardIm.CardId,
+                    CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
+                    Created = DateTime.Now
+                }));
+            }
+            
 
-            return new AllowedAccessCardVm(result);
+            return new AllowedAccessCardsVm(result);
         }
         catch (Exception e)
         {

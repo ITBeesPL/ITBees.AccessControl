@@ -20,7 +20,7 @@ public class AllowedAccessCardsController : RestfulControllerBase<AllowedAccessC
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] AllowedAccessCardIm allowedAccessCardIm)
+    public IActionResult Post([FromBody] AllowedAccessCardsIm allowedAccessCardIm)
     {
         return ReturnOkResult(() => _allowedCardsService.RegisterCard(allowedAccessCardIm));
     }
