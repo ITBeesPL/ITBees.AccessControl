@@ -47,13 +47,11 @@ public class AllowedCardsService : IAllowedCardsService
             if (e.Message.Contains("Duplicate"))
             {
                 var cardAlreadyAllowedForAuthorization = "Card already allowed for authorization";
-                throw new FasApiErrorException(cardAlreadyAllowedForAuthorization,
-                    new FasApiErrorVm(cardAlreadyAllowedForAuthorization, 400, ""));
+                throw new FasApiErrorException(new FasApiErrorVm(cardAlreadyAllowedForAuthorization, 400, ""));
             }
 
             var error = "Error " + e.Message;
-            throw new FasApiErrorException(error,
-                new FasApiErrorVm(error, 500, ""));
+            throw new FasApiErrorException(new FasApiErrorVm(error, 500, ""));
         }
     }
 

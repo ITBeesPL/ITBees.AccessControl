@@ -4,7 +4,7 @@ using ITBees.RestfulApiControllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ITBees.AccessControl.Controllers;
+namespace ITBees.AccessControl.Controllers.PlatformInfrastructure;
 
 public class RfidSignalController :RestfulControllerBase<RfidSignalController>
 {

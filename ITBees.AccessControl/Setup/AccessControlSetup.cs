@@ -1,6 +1,7 @@
 ﻿using ITBees.AccessControl.Interfaces;
 using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Services;
+using ITBees.AccessControl.Services.PlatformOperator;
 using ITBees.Models.Hardware;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace ITBees.AccessControl.Setup
             services.AddScoped<IAuthorizeRfidDeviceService, AuthorizeRfidDeviceService>();
             services.AddScoped<IAuthorizeAccessCardsService, AuthorizeAccessCardsService>();
             services.AddScoped<IAllowedCardsService, AllowedCardsService>();
+            services.AddScoped<IAccessCardsService, AccessCardsService>();
         }
     }
 
@@ -32,6 +34,7 @@ namespace ITBees.AccessControl.Setup
             modelBuilder.Entity<AccessCard>().HasKey(x => x.Guid);
             modelBuilder.Entity<AccessCard>().HasIndex(x => x.CardId).IsUnique();
             modelBuilder.Entity<AccessCardGroup>().HasKey(x => x.Guid);
+            modelBuilder.Entity<AccessCardCardGroup>().HasKey(x => x.Guid);
             modelBuilder.Entity<AllowedAccessCard>().HasKey(x => x.Guid);
             modelBuilder.Entity<AllowedAccessCard>().HasIndex(x => x.CardId).IsUnique();
             modelBuilder.Entity<RfidReaderDevice>().HasKey(x => x.Guid);
