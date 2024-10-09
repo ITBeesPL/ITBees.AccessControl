@@ -11,7 +11,7 @@
     <PackageReference Include="ITBees.Fas.Setup" Version="8.0.5" />
     <PackageReference Include="ITBees.Interfaces" Version="8.0.26" />
     <PackageReference Include="ITBees.Models" Version="8.0.47" />
-    <PackageReference Include="ITBees.UserManager" Version="8.0.134" />
+    <PackageReference Include="ITBees.UserManager" Version="8.0.135" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Stripe.net" Version="45.9.0" />
   </ItemGroup>
