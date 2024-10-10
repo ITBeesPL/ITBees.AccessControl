@@ -4,6 +4,10 @@ namespace ITBees.AccessControl.Interfaces.ViewModels;
 
 public class AllowedAccessCardsVm
 {
+    public AllowedAccessCardsVm()
+    {
+        
+    }
     public AllowedAccessCardsVm(List<AllowedAccessCard> x)
     {
         this.AllowedAccessCards = x.Select(y=>new AllowedAccessCardVm(y)).ToList();
