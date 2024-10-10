@@ -65,4 +65,20 @@ public class AllowedCardsService : IAllowedCardsService
 
         return true;
     }
+
+    public PaginatedResult<AllowedAccessCardVm> GetCards(int page, int pageSize, string sortColumn, SortOrder sortOrder)
+    {
+        PaginatedResult<AllowedAccessCard> results = _allowedAccessCardRoRepo.GetDataPaginated(x =>true,  page, pageSize, sortColumn, sortOrder, x => x.CreatedBy);
+
+        var mappedResults = results.MapTo(ac => new AllowedAccessCardVm()
+        {
+            CardId = ac.CardId,
+            Created = ac.Created,
+            CreatedBy = ac.CreatedBy.LastName,
+            CreatedByGuid = ac.CreatedByGuid,
+            Guid = ac.Guid
+        });
+
+        return mappedResults;
+    }
 }

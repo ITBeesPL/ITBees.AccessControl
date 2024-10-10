@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ITBees.AccessControl.Controllers.PlatformInfrastructure;
+namespace ITBees.AccessControl.Controllers.PlatformOperator;
 
 [Authorize]
 public class AccessCardsController : RestfulControllerBase<AccessCardsController>
