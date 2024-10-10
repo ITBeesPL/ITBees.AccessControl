@@ -1,6 +1,7 @@
 ﻿using ITBees.AccessControl.Interfaces;
 using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Services;
+using ITBees.AccessControl.Services.Common;
 using ITBees.AccessControl.Services.PlatformOperator;
 using ITBees.Models.Hardware;
 using Microsoft.AspNetCore.Identity;
@@ -23,6 +24,7 @@ namespace ITBees.AccessControl.Setup
             services.AddScoped<IAuthorizeAccessCardsService, AuthorizeAccessCardsService>();
             services.AddScoped<IAllowedCardsService, AllowedCardsService>();
             services.AddScoped<IAccessCardsService, AccessCardsService>();
+            services.AddScoped<IAccessCardTypesService, AccessCardTypesService>();
         }
     }
 
