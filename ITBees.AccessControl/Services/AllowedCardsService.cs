@@ -1,4 +1,6 @@
-﻿using ITBees.AccessControl.Interfaces;
+﻿using ITBees.AccessControl.Controllers.PlatformAdmin;
+using ITBees.AccessControl.Controllers.PlatformAdmin.Models;
+using ITBees.AccessControl.Interfaces;
 using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Interfaces.ViewModels;
 using ITBees.Interfaces.Repository;
@@ -80,5 +82,33 @@ public class AllowedCardsService : IAllowedCardsService
         });
 
         return mappedResults;
+    }
+
+    public DeleteAccessCardResultVm Delete(AllowedAccessCardsDm allowedAccessCardsDm)
+    {
+        var failedGuids = new List<Guid>();
+        var successGuids = new List<Guid>();
+        foreach (var card in allowedAccessCardsDm.Guids)
+        {
+            try
+            {
+                var result = _allowedAccessCardRwRepo.DeleteData(x => x.Guid == card);
+                if (result == 0)
+                {
+                    failedGuids.Add(card);
+                }
+                else
+                {
+                    successGuids.Add(card);
+                }
+                
+            }
+            catch (Exception e)
+            {
+                failedGuids.Add(card);
+            }
+        }
+
+        return new DeleteAccessCardResultVm() { DeletedCardsFail = failedGuids, DeletedCardsSuccess = successGuids };
     }
 }

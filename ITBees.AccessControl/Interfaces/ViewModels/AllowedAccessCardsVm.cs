@@ -6,8 +6,8 @@ public class AllowedAccessCardsVm
 {
     public AllowedAccessCardsVm(List<AllowedAccessCard> x)
     {
-        this.AllowedAccessCards = x;
+        this.AllowedAccessCards = x.Select(y=>new AllowedAccessCardVm(y)).ToList();
     }
 
-    public List<AllowedAccessCard> AllowedAccessCards { get; set; }
+    public List<AllowedAccessCardVm> AllowedAccessCards { get; set; }
 }
