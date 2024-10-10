@@ -22,12 +22,14 @@ public class AllowedAccessCardsController : RestfulControllerBase<AllowedAccessC
     }
 
     [HttpPost]
+    [Produces<AllowedAccessCardsVm>]
     public IActionResult Post([FromBody] AllowedAccessCardsIm allowedAccessCardIm)
     {
         return ReturnOkResult(() => _allowedCardsService.RegisterCard(allowedAccessCardIm));
     }
 
     [HttpGet]
+    [Produces<PaginatedResult<AllowedAccessCardsVm>>]
     public IActionResult Get(int page, int pageSize, string sortColumn, SortOrder sortOrder)
     {
         return ReturnOkResult(() => _allowedCardsService.GetCards(page, pageSize, sortColumn, sortOrder));
