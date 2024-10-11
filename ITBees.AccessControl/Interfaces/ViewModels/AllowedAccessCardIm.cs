@@ -4,7 +4,7 @@ public class AllowedAccessCardIm
 {
     public AllowedAccessCardIm()
     {
-        
+
     }
 
     public AllowedAccessCardIm(AccessCardAuthorizeIm x)
@@ -13,4 +13,6 @@ public class AllowedAccessCardIm
     }
 
     public string CardId { get; set; }
+    public int AccessCardTypeId { get; set; }
+    public Guid? CompanyGuid { get; set; }
 }

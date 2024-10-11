@@ -28,7 +28,8 @@ class AuthorizeAccessCardsService : IAuthorizeAccessCardsService
         {
             //todo security check!!!!
 
-            if (_allowedCardsService.IsCardAllowedToAuthorize(accessCard.CardId))
+            var isCardAllowedToAuthorize = _allowedCardsService.IsCardAllowedToAuthorize(accessCard.CardId);
+            if (isCardAllowedToAuthorize.Allowed)
             {
                 var resultAccessCard = _accessCardRwRepo.InsertData(new AccessCard()
                 {
@@ -43,6 +44,8 @@ class AuthorizeAccessCardsService : IAuthorizeAccessCardsService
                     ValidDate = accessCard.ValidDate
                 });
                 result.AllowedAccessCards.Add(new AllowedAccessCardVm(resultAccessCard));
+
+                _allowedCardsService.SetCardAsActive(isCardAllowedToAuthorize.CardGuid);
             }
             else
             {

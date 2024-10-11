@@ -37,10 +37,12 @@ public class AllowedCardsService : IAllowedCardsService
                 {
                     CardId = allowedAccessCardIm.CardId,
                     CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
-                    Created = DateTime.Now
+                    Created = DateTime.Now,
+                    AccessCardTypeId = allowedAccessCardIm.AccessCardTypeId,
+                    CompanyGuid = allowedAccessCardIm.CompanyGuid
                 }));
             }
-            
+
 
             return new AllowedAccessCardsVm(result);
         }
@@ -57,20 +59,20 @@ public class AllowedCardsService : IAllowedCardsService
         }
     }
 
-    public bool IsCardAllowedToAuthorize(string cardId)
+    public IsCardAllowedResult IsCardAllowedToAuthorize(string cardId)
     {
         var card = _allowedAccessCardRoRepo.GetData(x => x.CardId == cardId).FirstOrDefault();
         if (card == null)
         {
-            return false;
+            return new IsCardAllowedResult() { Allowed = false, CardGuid = null };
         }
 
-        return true;
+        return new IsCardAllowedResult() { Allowed = true, CardGuid = card.Guid };
     }
 
     public PaginatedResult<AllowedAccessCardVm> GetCards(int page, int pageSize, string sortColumn, SortOrder sortOrder)
     {
-        PaginatedResult<AllowedAccessCard> results = _allowedAccessCardRoRepo.GetDataPaginated(x =>true,  page, pageSize, sortColumn, sortOrder, x => x.CreatedBy);
+        PaginatedResult<AllowedAccessCard> results = _allowedAccessCardRoRepo.GetDataPaginated(x => true, page, pageSize, sortColumn, sortOrder, x => x.CreatedBy);
 
         var mappedResults = results.MapTo(ac => new AllowedAccessCardVm()
         {
@@ -101,7 +103,7 @@ public class AllowedCardsService : IAllowedCardsService
                 {
                     successGuids.Add(card);
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -110,5 +112,14 @@ public class AllowedCardsService : IAllowedCardsService
         }
 
         return new DeleteAccessCardResultVm() { DeletedCardsFail = failedGuids, DeletedCardsSuccess = successGuids };
+    }
+
+    public void SetCardAsActive(Guid? cardGuid)
+    {
+        _allowedAccessCardRwRepo.UpdateData(x => x.Guid == cardGuid, x =>
+        {
+            x.IsActive = true;
+            x.ActivationDate = DateTime.Now;
+        });
     }
 }
