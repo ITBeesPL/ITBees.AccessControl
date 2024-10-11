@@ -122,4 +122,17 @@ public class AllowedCardsService : IAllowedCardsService
             x.ActivationDate = DateTime.Now;
         });
     }
+
+    public AllowedAccessCardVm UpdateCard(AllowedAccessCardUm allowedAccessCardUm)
+    {
+        var result = _allowedAccessCardRwRepo.UpdateData(x => x.Guid == allowedAccessCardUm.Guid, x =>
+        {
+            x.AccessCardTypeId = allowedAccessCardUm.AccessCardTypeId;
+            x.CompanyGuid = allowedAccessCardUm.CompanyGuid;
+        }).FirstOrDefault();
+        if (result != null)
+            return new AllowedAccessCardVm(result);
+
+        throw new ResultNotFoundException($"Card with guid {allowedAccessCardUm.Guid} not found ");
+    }
 }

@@ -13,4 +13,5 @@ public interface IAllowedCardsService
     PaginatedResult<AllowedAccessCardVm> GetCards(int page, int pageSize, string sortColumn, SortOrder sortOrder);
     DeleteAccessCardResultVm Delete(AllowedAccessCardsDm allowedAccessCardsDm);
     void SetCardAsActive(Guid? cardGuid);
+    AllowedAccessCardVm UpdateCard(AllowedAccessCardUm allowedAccessCardUm);
 }
