@@ -14,7 +14,7 @@
     <PackageReference Include="ITBees.UserManager" Version="8.0.145" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Stripe.net" Version="46.1.0" />
-    <PackageReference Include="ITBees.FAS.SatelliteAgents" Version="8.0.19" />
+    <PackageReference Include="ITBees.FAS.SatelliteAgents" Version="8.0.21" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ITBees.RestfulApiControllers" Version="8.0.21" />
