@@ -22,11 +22,4 @@ public class RfidSignalController :RestfulControllerBase<RfidSignalController>
 
         return ReturnOkResult(()=>_accessControlSignalReceived.Handle(receivedRfidSignalIm, base.GetClientIp()));
     }
-
-    [HttpPost]
-    public IActionResult Post()
-    {
-        Console.WriteLine("post");
-        return Ok();
-    }
 }
