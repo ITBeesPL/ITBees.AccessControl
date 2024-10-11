@@ -43,7 +43,7 @@ class AccessControlSignalReceived : IAccessControlSignalReceived
                 Mac = receivedRfidSignalIm.Mac
             });
 
-            _helloService.WelcomeAgent(new HelloIm() { Mac = receivedRfidSignalIm.Mac, SystemInformation = $"RFID Reader {receivedRfidSignalIm.Name} / IP {receivedRfidSignalIm.Ip}" });
+            _helloService.WelcomeAgent(new HelloIm() { Mac = receivedRfidSignalIm.Mac, SystemInformation = $"RFID Reader {receivedRfidSignalIm.Name} / IP {receivedRfidSignalIm.Ip}", DeviceType = "RfidReader"});
 
             throw new ResultNotFoundException("Rfid device is not authorized.");
         }
