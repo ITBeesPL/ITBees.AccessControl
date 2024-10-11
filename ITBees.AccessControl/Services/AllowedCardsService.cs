@@ -72,7 +72,7 @@ public class AllowedCardsService : IAllowedCardsService
 
     public PaginatedResult<AllowedAccessCardVm> GetCards(int page, int pageSize, string sortColumn, SortOrder sortOrder)
     {
-        PaginatedResult<AllowedAccessCard> results = _allowedAccessCardRoRepo.GetDataPaginated(x => true, page, pageSize, sortColumn, sortOrder, x => x.CreatedBy);
+        PaginatedResult<AllowedAccessCard> results = _allowedAccessCardRoRepo.GetDataPaginated(x => true, page, pageSize, sortColumn, sortOrder, x => x.CreatedBy, x => x.Company);
 
         var mappedResults = results.MapTo(ac => new AllowedAccessCardVm()
         {
