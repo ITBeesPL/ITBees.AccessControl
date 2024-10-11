@@ -80,7 +80,12 @@ public class AllowedCardsService : IAllowedCardsService
             Created = ac.Created,
             CreatedBy = ac.CreatedBy.LastName,
             CreatedByGuid = ac.CreatedByGuid,
-            Guid = ac.Guid
+            Guid = ac.Guid,
+            AccessCardTypeId = ac.AccessCardTypeId,
+            ActivationDate = ac.ActivationDate,
+            CompanyGuid = ac.CompanyGuid,
+            CompanyName = ac.Company?.CompanyName,
+            IsActive = ac.IsActive
         });
 
         return mappedResults;
