@@ -72,4 +72,9 @@ public class BuildingService : IBuildingService
     {
         _buildingRwRepo.DeleteData(x => x.Guid == guid);
     }
+
+    public PaginatedResult<BuildingVm> GetAll(Guid companyGuid, int page, int pageSize, string sortColumn, SortOrder sortOrder)
+    {
+        return _buildingRoRepo.GetDataPaginated(x => true, page, pageSize, sortColumn, sortOrder).MapTo(x => new BuildingVm(x));
+    }
 }
