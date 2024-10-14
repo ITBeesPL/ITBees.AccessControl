@@ -23,7 +23,7 @@
     <Folder Include="Controllers\PlatformAdmin\Models\" />
     <Folder Include="Controllers\PlatformInfrastructure\Models\" />
     <Folder Include="Services\Common\" />
-    <Folder Include="Services\PlatformAdmin\" />
+    <Folder Include="Services\PlatformAdmin\Models\" />
     <Folder Include="Translations\" />
   </ItemGroup>
 

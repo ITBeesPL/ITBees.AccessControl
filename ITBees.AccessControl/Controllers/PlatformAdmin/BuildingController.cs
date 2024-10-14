@@ -1,4 +1,7 @@
-﻿using ITBees.Models.Roles;
+﻿using ITBees.AccessControl.Controllers.PlatformAdmin.Models;
+using ITBees.AccessControl.Interfaces;
+using ITBees.Models.Common;
+using ITBees.Models.Roles;
 using ITBees.RestfulApiControllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,5 +24,25 @@ public class BuildingController : RestfulControllerBase<BuildingController>
     public IActionResult Get(Guid guid)
     {
         return ReturnOkResult(() => _buildingService.Get(guid));
+    }
+
+    [HttpPost]
+    [Produces<BuildingVm>]
+    public IActionResult Post([FromBody] BuildingIm buildingIm)
+    {
+        return ReturnOkResult(() => _buildingService.Create(buildingIm));
+    }
+
+    [HttpPut]
+    [Produces<BuildingVm>]
+    public IActionResult Put([FromBody] BuildingUm buildingUm)
+    {
+        return ReturnOkResult(() => _buildingService.Update(buildingUm));
+    }
+
+    [HttpDelete]
+    public IActionResult Del(Guid guid)
+    {
+        return ReturnOkResult(()=>_buildingService.Delete(guid));
     }
 }

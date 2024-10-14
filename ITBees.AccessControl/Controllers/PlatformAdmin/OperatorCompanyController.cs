@@ -1,7 +1,6 @@
 ﻿using ITBees.AccessControl.Controllers.PlatformAdmin.Models;
 using ITBees.AccessControl.Interfaces;
-using ITBees.AccessControl.Services.PlatformAdmin;
-using ITBees.Interfaces.Repository;
+using ITBees.AccessControl.Services.PlatformAdmin.Models;
 using ITBees.Models.Roles;
 using ITBees.RestfulApiControllers;
 using Microsoft.AspNetCore.Authorization;
@@ -11,20 +10,27 @@ using Microsoft.Extensions.Logging;
 namespace ITBees.AccessControl.Controllers.PlatformAdmin;
 
 [Authorize(Roles = Role.PlatformOperator)]
-public class OperatorCompaniesController: RestfulControllerBase<OperatorCompaniesController>
+public class OperatorCompanyController : RestfulControllerBase<OperatorCompanyController>
 {
     private readonly IOperatorCompaniesService _operatorCompaniesService;
 
-    public OperatorCompaniesController(ILogger<OperatorCompaniesController> logger,
+    public OperatorCompanyController(ILogger<OperatorCompanyController> logger,
         IOperatorCompaniesService operatorCompaniesService) : base(logger)
     {
         _operatorCompaniesService = operatorCompaniesService;
     }
 
     [HttpGet]
-    [Produces<PaginatedResult<OperatorCompanyVm>>]
-    public IActionResult Get(string? search, int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
+    [Produces<OperatorCompanyVm>]
+    public IActionResult Get(Guid guid)
     {
-        return ReturnOkResult(() => _operatorCompaniesService.Get(search, page, pageSize, sortColumn, sortOrder));
+        return ReturnOkResult(() => _operatorCompaniesService.Get(guid));
+    }
+
+    [HttpPost]
+    [Produces<OperatorCompanyVm>]
+    public IActionResult Post([FromBody] OperatorCompanyIm operatorCompanyIm)
+    {
+        return ReturnOkResult(() => _operatorCompaniesService.Create(operatorCompanyIm));
     }
 }
