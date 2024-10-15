@@ -28,6 +28,7 @@ namespace ITBees.AccessControl.Setup
             services.AddScoped<IAccessCardTypesService, AccessCardTypesService>();
             services.AddScoped<IOperatorCompaniesService, OperatorCompaniesService>();
             services.AddScoped<IUnauthorizedAccessCardLogsService, UnauthorizedAccessCardLogsService>();
+            services.AddScoped<IBuildingService, BuildingService>();
         }
     }
 

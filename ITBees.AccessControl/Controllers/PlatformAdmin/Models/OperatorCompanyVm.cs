@@ -21,6 +21,8 @@ public class OperatorCompanyVm
         Nip = x.Nip;
         PostCode = x.PostCode;
         Street = x.Street;
+        DevicesCount = 1;
+        BuildingsCount = 0;
     }
 
     public Guid Guid { get; set; }
@@ -36,4 +38,6 @@ public class OperatorCompanyVm
     public Guid? OwnerGuid { get; set; }
     public string PostCode { get; set; }
     public string Street { get; set; }
+    public int BuildingsCount { get; set; }
+    public int DevicesCount { get; set; }
 }
