@@ -9,5 +9,6 @@ public class BuildingUm
     public bool IsActive { get; set; }
     public string Name { get; set; }
     public Guid Guid { get; set; }
+    public Guid? CompanyGuid { get; set; }
     public List<BuildingDeviceHubVm> BuildingDeviceHubs { get; set; }
 }

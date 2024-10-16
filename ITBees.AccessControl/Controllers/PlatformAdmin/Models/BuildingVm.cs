@@ -19,6 +19,8 @@ public class BuildingVm
         CreatedBy = x.CreatedBy?.DisplayName;
         Created = x.Created;
         IsActive = x.IsActive;
+        CompanyGuid = x.CompanyGuid;
+        CompanyName = x.Company?.CompanyName;
     }
     public Guid Guid { get; set; }
     public string Name { get; set; }
@@ -27,4 +29,6 @@ public class BuildingVm
     public string CreatedBy { get; set; }
     public DateTime Created { get; set; }
     public bool IsActive { get; set; }
+    public Guid? CompanyGuid { get; set; }
+    public string? CompanyName { get; set; }
 }

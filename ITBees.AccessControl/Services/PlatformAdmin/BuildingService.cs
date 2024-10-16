@@ -46,6 +46,7 @@ public class BuildingService : IBuildingService
             },
             IsActive = x.IsActive,
             Name = x.Name,
+            CompanyGuid = x.CompanyGuid,
             BuildingDeviceHubs = new List<BuildingDeviceHub>()
         });
 
@@ -61,6 +62,7 @@ public class BuildingService : IBuildingService
             x.GpsLocation = new GpsLocation() { Latitude = buildingUm.GpsLocation.Latitude, Longitude = buildingUm.GpsLocation.Longitude };
             x.IsActive = buildingUm.IsActive;
             x.Name = buildingUm.Name;
+            x.CompanyGuid = buildingUm.CompanyGuid;
         });
         var result = _buildingRoRepo.GetData(x => x.Guid == buildingUm.Guid, x => x.BuildingDeviceHubs,
             x => x.CreatedBy, x => x.GpsLocation).First();
