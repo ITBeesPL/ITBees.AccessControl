@@ -29,7 +29,7 @@ public class BuildingService : IBuildingService
 
     public BuildingVm Get(Guid guid)
     {
-        var result = _buildingRoRepo.GetData(x => x.Guid == guid).FirstOrDefault();
+        var result = _buildingRoRepo.GetData(x => x.Guid == guid, x => x.BuildingDeviceHubs, x => x.Company).First();
         return new BuildingVm(result);
     }
 
@@ -77,7 +77,7 @@ public class BuildingService : IBuildingService
 
     public PaginatedResult<BuildingVm> GetAll(Guid companyGuid, int page, int pageSize, string sortColumn, SortOrder sortOrder)
     {
-        if (companyGuid != null)
+        if (companyGuid != null && companyGuid != new Guid("00000000-0000-0000-0000-000000000000"))
         {
             return _buildingRoRepo.GetDataPaginated(x => x.CompanyGuid == companyGuid, page, pageSize, sortColumn, sortOrder).MapTo(x => new BuildingVm(x));
         }
