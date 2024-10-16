@@ -77,6 +77,11 @@ public class BuildingService : IBuildingService
 
     public PaginatedResult<BuildingVm> GetAll(Guid companyGuid, int page, int pageSize, string sortColumn, SortOrder sortOrder)
     {
+        if (companyGuid != null)
+        {
+            return _buildingRoRepo.GetDataPaginated(x => x.CompanyGuid == companyGuid, page, pageSize, sortColumn, sortOrder).MapTo(x => new BuildingVm(x));
+        }
+
         return _buildingRoRepo.GetDataPaginated(x => true, page, pageSize, sortColumn, sortOrder).MapTo(x => new BuildingVm(x));
     }
 }
