@@ -1,22 +1,22 @@
-﻿using Google.Apis.Logging;
-using ITBees.AccessControl.Controllers.PlatformAdmin;
+﻿using ITBees.AccessControl.Controllers.PlatformAdmin;
 using ITBees.AccessControl.Controllers.PlatformAdmin.Models;
 using ITBees.AccessControl.Interfaces;
 using ITBees.Interfaces.Repository;
 using ITBees.Models.Buildings;
 using ITBees.Models.Common;
 using ITBees.UserManager.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace ITBees.AccessControl.Services.PlatformAdmin;
 
 public class BuildingService : IBuildingService
 {
-    private readonly ILogger _logger;
+    private readonly ILogger<BuildingService> _logger;
     private readonly IAspCurrentUserService _aspCurrentUserService;
     private readonly IReadOnlyRepository<Building> _buildingRoRepo;
     private readonly IWriteOnlyRepository<Building> _buildingRwRepo;
 
-    public BuildingService(ILogger logger,
+    public BuildingService(ILogger<BuildingService> logger,
         IAspCurrentUserService aspCurrentUserService,
         IReadOnlyRepository<Building> buildingRoRepo,
         IWriteOnlyRepository<Building> buildingRwRepo)
