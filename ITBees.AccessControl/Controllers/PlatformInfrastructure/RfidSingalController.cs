@@ -16,6 +16,7 @@ public class RfidSignalController :RestfulControllerBase<RfidSignalController>
     }
     
     [HttpGet]
+    [Produces<AccessRequestResultVm>]
     public IActionResult Get(string mac, string ip, string name, string id, string inout, string ts, string io, string put)
     {
         ReceivedRfidSignalIm receivedRfidSignalIm = new ReceivedRfidSignalIm(mac, ip, name, id, inout, ts, io, put);

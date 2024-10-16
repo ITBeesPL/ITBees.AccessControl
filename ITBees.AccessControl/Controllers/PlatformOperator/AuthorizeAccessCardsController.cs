@@ -19,6 +19,7 @@ public class AuthorizeAccessCardsController : RestfulControllerBase<AuthorizeAcc
     }
 
     [HttpPost]
+    [Produces<AuthorizeCardsResultVm>]
     public IActionResult Post([FromBody] AuthorizeAccessCardsIm authorizeAccessCardsIm)
     {
         return ReturnOkResult(() => _authorizeAccessCardsService.Authorize(authorizeAccessCardsIm));
