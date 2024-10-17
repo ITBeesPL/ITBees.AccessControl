@@ -48,6 +48,8 @@ namespace ITBees.AccessControl.Setup
             modelBuilder.Entity<UnauthorizedAccessCardLog>().HasKey(x => x.Id);
             modelBuilder.Entity<UnauthorizedRfidDevice>().HasKey(x => x.Guid);
             modelBuilder.Entity<UnauthorizedRfidDevice>().HasIndex(x => x.Mac).IsUnique();
+            modelBuilder.Entity<DeviceHub>().HasDiscriminator<string>("DeviceType")
+                .HasValue<PhysicalDeviceHub>(nameof(PhysicalDeviceHub) +"Type");
         }
     }
 }
