@@ -1,9 +1,13 @@
 ﻿using ITBees.AccessControl.Controllers.PlatformAdmin.Models;
 using ITBees.AccessControl.Controllers.PlatformInfrastructure;
 using ITBees.AccessControl.Interfaces;
+using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Services.PlatformAdmin.Models;
+using ITBees.FAS.SatelliteAgents.Database;
 using ITBees.Interfaces.Repository;
+using ITBees.Models.Buildings;
 using ITBees.Models.Companies;
+using ITBees.Models.Hardware;
 using ITBees.UserManager.Interfaces;
 
 namespace ITBees.AccessControl.Services.PlatformAdmin;
@@ -13,15 +17,21 @@ public class OperatorCompaniesService : IOperatorCompaniesService
     private readonly IReadOnlyRepository<Company> _companyRoRepo;
     private readonly IWriteOnlyRepository<Company> _companyRwRepo;
     private readonly IAspCurrentUserService _aspCurrentUserService;
+    private readonly IReadOnlyRepository<Building> _buildingRoRepo;
+    private readonly IReadOnlyRepository<PhysicalDeviceHub> _devicesRoRepo;
 
     public OperatorCompaniesService(
         IReadOnlyRepository<Company> companyRoRepo,
         IWriteOnlyRepository<Company> companyRwRepo,
-        IAspCurrentUserService aspCurrentUserService)
+        IAspCurrentUserService aspCurrentUserService,
+        IReadOnlyRepository<Building> buildingRoRepo,
+        IReadOnlyRepository<PhysicalDeviceHub> devicesRoRepo)
     {
         _companyRoRepo = companyRoRepo;
         _companyRwRepo = companyRwRepo;
         _aspCurrentUserService = aspCurrentUserService;
+        _buildingRoRepo = buildingRoRepo;
+        _devicesRoRepo = devicesRoRepo;
     }
 
     public PaginatedResult<OperatorCompanyVm> Get(string? search, int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
@@ -48,7 +58,8 @@ public class OperatorCompaniesService : IOperatorCompaniesService
                 sortColumn,
                 sortOrder.Value,
                 x => x.Owner);
-            return result.MapTo(x => new OperatorCompanyVm(x));
+            var resultDevicesAndBuildings = GetInfrastructureData(result);
+            return GetCompanyWithCounters(result, resultDevicesAndBuildings);
         }
 
         var resultPaginated = _companyRoRepo.GetDataPaginated(x => true,
@@ -57,7 +68,24 @@ public class OperatorCompaniesService : IOperatorCompaniesService
             sortColumn,
             sortOrder.Value,
             x => x.Owner);
-        return resultPaginated.MapTo(x => new OperatorCompanyVm(x));
+        var resultDevicesAndBuildings2 = GetInfrastructureData(resultPaginated);
+        return GetCompanyWithCounters(resultPaginated, resultDevicesAndBuildings2);
+    }
+
+    private static PaginatedResult<OperatorCompanyVm> GetCompanyWithCounters(PaginatedResult<Company> result,
+        InfrastructureElements resultDevicesAndBuildings)
+    {
+        return result.MapTo(x => new OperatorCompanyVm(x,
+            resultDevicesAndBuildings.Builidngs.Count(y => y.CompanyGuid == x.Guid),
+            resultDevicesAndBuildings.Devices.Count(y => y.CompanyGuid == x.Guid)));
+    }
+
+    private InfrastructureElements GetInfrastructureData(PaginatedResult<Company> companies)
+    {
+        var companyGuids = companies.Data.Select(x => x.Guid);
+        var buildings = _buildingRoRepo.GetData(x => companyGuids.Contains(x.CompanyGuid.Value));
+        var devices = _devicesRoRepo.GetData(x => companyGuids.Contains(x.CompanyGuid.Value));
+        return new InfrastructureElements() { Builidngs = buildings, Devices = devices };
     }
 
     public OperatorCompanyVm Get(Guid guid)
@@ -96,8 +124,14 @@ public class OperatorCompaniesService : IOperatorCompaniesService
             x.OwnerGuid = operatorCompanyUm.OwnerGuid;
             x.PostCode = operatorCompanyUm.PostCode;
             x.Street = operatorCompanyUm.Street;
-        }, x=>x.CreatedBy).First();
+        }, x => x.CreatedBy).First();
 
         return new OperatorCompanyVm(result);
     }
+}
+
+internal class InfrastructureElements
+{
+    public ICollection<Building> Builidngs { get; set; }
+    public ICollection<PhysicalDeviceHub> Devices { get; set; }
 }
