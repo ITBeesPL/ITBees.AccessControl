@@ -21,7 +21,7 @@ public class BuildingsController : RestfulControllerBase<BuildingsController>
 
     [HttpGet]
     [Produces<PaginatedResult<BuildingVm>>]
-    public IActionResult Get(Guid companyGuid, int page, int pageSize, string sortColumn, SortOrder sortOrder)
+    public IActionResult Get(Guid? companyGuid, int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
     {
         return ReturnOkResult(() => _buildingService.GetAll(companyGuid, page,pageSize, sortColumn, sortOrder));
     }

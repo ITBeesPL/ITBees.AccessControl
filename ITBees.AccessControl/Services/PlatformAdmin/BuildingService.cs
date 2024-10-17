@@ -75,13 +75,18 @@ public class BuildingService : IBuildingService
         _buildingRwRepo.DeleteData(x => x.Guid == guid);
     }
 
-    public PaginatedResult<BuildingVm> GetAll(Guid companyGuid, int page, int pageSize, string sortColumn, SortOrder sortOrder)
+    public PaginatedResult<BuildingVm> GetAll(Guid? companyGuid, int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
     {
+        page ??= 1;
+        pageSize ??= 25;
+        sortOrder ??= SortOrder.Ascending;
+
+
         if (companyGuid != null && companyGuid != new Guid("00000000-0000-0000-0000-000000000000"))
         {
-            return _buildingRoRepo.GetDataPaginated(x => x.CompanyGuid == companyGuid, page, pageSize, sortColumn, sortOrder).MapTo(x => new BuildingVm(x));
+            return _buildingRoRepo.GetDataPaginated(x => x.CompanyGuid == companyGuid, page.Value, pageSize.Value, sortColumn, sortOrder.Value).MapTo(x => new BuildingVm(x));
         }
 
-        return _buildingRoRepo.GetDataPaginated(x => true, page, pageSize, sortColumn, sortOrder).MapTo(x => new BuildingVm(x));
+        return _buildingRoRepo.GetDataPaginated(x => true, page.Value, pageSize.Value, sortColumn, sortOrder.Value).MapTo(x => new BuildingVm(x));
     }
 }
