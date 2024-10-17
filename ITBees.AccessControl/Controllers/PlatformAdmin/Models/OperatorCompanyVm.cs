@@ -11,7 +11,7 @@ public class OperatorCompanyVm
     public OperatorCompanyVm(Company x)
     {
         Guid = x.Guid;
-        Name = x.CompanyName;
+        CompanyName = x.CompanyName;
         Email = x.Owner?.Email;
         OwnerName = x.Owner?.DisplayName;
         OwnerGuid = x.OwnerGuid;
@@ -21,12 +21,28 @@ public class OperatorCompanyVm
         Nip = x.Nip;
         PostCode = x.PostCode;
         Street = x.Street;
-        DevicesCount = 1;
+        DevicesCount = 0;
         BuildingsCount = 0;
     }
 
+    public OperatorCompanyVm(Company x, int buildingCount, int devicesCount)
+    {
+        Guid = x.Guid;
+        CompanyName = x.CompanyName;
+        Email = x.Owner?.Email;
+        OwnerName = x.Owner?.DisplayName;
+        OwnerGuid = x.OwnerGuid;
+        IsActive = x.IsActive;
+        City = x.City;
+        CompanyShortName = x.CompanyShortName;
+        Nip = x.Nip;
+        PostCode = x.PostCode;
+        Street = x.Street;
+        DevicesCount = devicesCount;
+        BuildingsCount = buildingCount;
+    }
+
     public Guid Guid { get; set; }
-    public string Name { get; set; }
     public string Email { get; set; }
     public string OwnerName { get; set; }
 

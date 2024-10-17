@@ -34,6 +34,7 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
                 CompanyGuid = authorizeRfidDeviceIm.CompanyGuid,
                 DeviceName = authorizeRfidDeviceIm.DeviceName,
                 LastConnection = null,
+                BuildingGuid =authorizeRfidDeviceIm.BuildingGuid
             });
 
             _unauthorizedRfidDeviceRwRepo.DeleteData(x => x.Mac == authorizeRfidDeviceIm.Mac);
