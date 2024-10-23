@@ -43,7 +43,7 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
         }
         catch (Exception e)
         {
-            if (e.Message.Contains("Duplicate"))
+            if (e.InnerException.Message.Contains("Duplicate"))
             {
                 throw new FasApiErrorException(new FasApiErrorVm("Rfid reader already in database", StatusCodes.Status400BadRequest, ""));
             }

@@ -50,6 +50,10 @@ public class OperatorCompaniesService : IOperatorCompaniesService
         {
             sortColumn = "";
         }
+
+        if (sortOrder == null)
+            sortOrder = SortOrder.Ascending;
+
         if (!string.IsNullOrEmpty(search))
         {
             var result = _companyRoRepo.GetDataPaginated(x => x.CompanyName.Contains(search) || x.CompanyShortName.Contains(search) || x.Owner.Email.Contains(search),
@@ -67,7 +71,7 @@ public class OperatorCompaniesService : IOperatorCompaniesService
             pageSize.Value,
             sortColumn,
             sortOrder.Value,
-            x => x.Owner);
+            x => x.Owner, x=>x.CreatedBy);
         var resultDevicesAndBuildings2 = GetInfrastructureData(resultPaginated);
         return GetCompanyWithCounters(resultPaginated, resultDevicesAndBuildings2);
     }
