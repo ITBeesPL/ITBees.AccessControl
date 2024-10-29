@@ -6,5 +6,6 @@ public class AuthorizeRfidDeviceIm
     public string Mac { get; set; }
     public Guid? CompanyGuid { get; set; }
     public string DeviceName { get; set; }
+    public Guid DeviceGuid { get; set; }
     public Guid? BuildingGuid { get; set; }
 }
