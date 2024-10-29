@@ -1,5 +1,6 @@
 ﻿using ITBees.AccessControl.Controllers.PlatformAdmin.Models;
 using ITBees.AccessControl.Interfaces;
+using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Interfaces.ViewModels;
 using ITBees.Interfaces.Repository;
 using ITBees.Models.Roles;
@@ -31,7 +32,7 @@ public class AllowedAccessCardsController : RestfulControllerBase<AllowedAccessC
 
     [HttpGet]
     [Produces<PaginatedResult<AllowedAccessCardVm>>]
-    public IActionResult Get(int page, int pageSize, string sortColumn, SortOrder sortOrder)
+    public IActionResult Get(int? page, int? pageSize, AllowedAccessCardSortOptions? sortColumn, SortOrder? sortOrder)
     {
         return ReturnOkResult(() => _allowedCardsService.GetCards(page, pageSize, sortColumn, sortOrder));
     }

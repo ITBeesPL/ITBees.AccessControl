@@ -1,5 +1,4 @@
-﻿using ITBees.AccessControl.Controllers.PlatformAdmin;
-using ITBees.AccessControl.Controllers.PlatformAdmin.Models;
+﻿using ITBees.AccessControl.Controllers.PlatformAdmin.Models;
 using ITBees.AccessControl.Interfaces;
 using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Interfaces.ViewModels;
@@ -70,9 +69,9 @@ public class AllowedCardsService : IAllowedCardsService
         return new IsCardAllowedResult() { Allowed = true, CardGuid = card.Guid };
     }
 
-    public PaginatedResult<AllowedAccessCardVm> GetCards(int page, int pageSize, string sortColumn, SortOrder sortOrder)
+    public PaginatedResult<AllowedAccessCardVm> GetCards(int? page, int? pageSize, AllowedAccessCardSortOptions? sortColumn, SortOrder? sortOrder)
     {
-        PaginatedResult<AllowedAccessCard> results = _allowedAccessCardRoRepo.GetDataPaginated(x => true, page, pageSize, sortColumn, sortOrder, x => x.CreatedBy, x => x.Company);
+        PaginatedResult<AllowedAccessCard> results = _allowedAccessCardRoRepo.GetDataPaginated(x => true, new SortOptions(page, pageSize,sortColumn, sortOrder), x => x.CreatedBy, x => x.Company);
 
         var mappedResults = results.MapTo(ac => new AllowedAccessCardVm()
         {
