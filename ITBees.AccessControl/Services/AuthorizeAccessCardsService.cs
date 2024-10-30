@@ -41,7 +41,8 @@ class AuthorizeAccessCardsService : IAuthorizeAccessCardsService
                     InvitationSend = accessCard.InvitationSend,
                     OwnerEmail = accessCard.OwnerEmail,
                     OwnerName = accessCard.OwnerName,
-                    ValidDate = accessCard.ValidDate
+                    ValidDate = accessCard.ValidDate,
+                    AccessCardTypeId = isCardAllowedToAuthorize.AccessCardTypeId
                 });
                 result.AllowedAccessCards.Add(new AllowedAccessCardVm(resultAccessCard));
 

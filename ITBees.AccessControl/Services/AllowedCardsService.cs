@@ -47,7 +47,7 @@ public class AllowedCardsService : IAllowedCardsService
         }
         catch (Exception e)
         {
-            if (e.Message.Contains("Duplicate"))
+            if (e.InnerException.Message.Contains("Duplicate"))
             {
                 var cardAlreadyAllowedForAuthorization = "Card already allowed for authorization";
                 throw new FasApiErrorException(new FasApiErrorVm(cardAlreadyAllowedForAuthorization, 400, ""));
@@ -63,7 +63,7 @@ public class AllowedCardsService : IAllowedCardsService
         var card = _allowedAccessCardRoRepo.GetData(x => x.CardId == cardId).FirstOrDefault();
         if (card == null)
         {
-            return new IsCardAllowedResult() { Allowed = false, CardGuid = null };
+            return new IsCardAllowedResult() { Allowed = false, CardGuid = null , AccessCardTypeId = card.AccessCardTypeId};
         }
 
         return new IsCardAllowedResult() { Allowed = true, CardGuid = card.Guid };
