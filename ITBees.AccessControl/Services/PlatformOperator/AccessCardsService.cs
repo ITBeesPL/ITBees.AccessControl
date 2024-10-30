@@ -22,18 +22,18 @@ class AccessCardsService : IAccessCardsService
         _accessCardsRoRepo = accessCardsRoRepo;
     }
 
-    public PaginatedResult<AccessCardVm> GetMyCompanyCards(int page, int pageSize, string sortColumn, SortOrder sortOrder)
+    public PaginatedResult<AccessCardVm> GetMyCompanyCards(int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
     {
         var cu = _aspCurrentUserService.GetCurrentUser();
         if (_aspCurrentUserService.TryCanIDoForCompany(TypeOfOperation.Ro, cu.LastUsedCompanyGuid) == false)
         {
             var message = "You don't have enought rights to get this data.";
-            throw new FasApiErrorException(new FasApiErrorVm(message,StatusCodes.Status403Forbidden,""));
+            throw new FasApiErrorException(new FasApiErrorVm(message, StatusCodes.Status403Forbidden, ""));
         }
 
-        PaginatedResult<AccessCard> results = _accessCardsRoRepo.GetDataPaginated(x => x.IsActive, page, pageSize, sortColumn, sortOrder,
+        PaginatedResult<AccessCard> results = _accessCardsRoRepo.GetDataPaginated(x => x.IsActive, new SortOptions(page, pageSize, sortColumn, sortOrder),
             x => x.AccessCardType, x => x.CreatedBy);
-        
+
         var mappedResults = results.MapTo(ac => new AccessCardVm
         {
             CardId = ac.CardId,

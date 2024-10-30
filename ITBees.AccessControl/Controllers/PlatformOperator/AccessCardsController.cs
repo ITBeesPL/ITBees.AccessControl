@@ -21,7 +21,7 @@ public class AccessCardsController : RestfulControllerBase<AccessCardsController
 
     [HttpGet]
     [Produces<PaginatedResult<AccessCardsVm>>]
-    public IActionResult Get(int page, int pageSize, string sortColumn, SortOrder sortOrder)
+    public IActionResult Get(int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
     {
         return ReturnOkResult(()=>_accessCardsService.GetMyCompanyCards(page, pageSize, sortColumn, sortOrder));
     }
