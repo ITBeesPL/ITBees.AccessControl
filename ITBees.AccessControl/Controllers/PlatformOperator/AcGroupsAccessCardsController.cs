@@ -20,6 +20,6 @@ public class AcGroupsAccessCardsController : RestfulControllerBase<AcGroupsAcces
     [Produces<PaginatedResult<AcGroupAccessCardsVm>>]
     public IActionResult Get(int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
     {
-        return ReturnOkResult(() => { _acGroupAccessCardsService.GetAll(page, pageSize, sortColumn, sortOrder); });
+        return ReturnOkResult(() => _acGroupAccessCardsService.GetAll(page, pageSize, sortColumn, sortOrder));
     }
 }

@@ -22,27 +22,27 @@ public class AcGroupController : RestfulControllerBase<AcGroupController>
     [Produces<AcGroupVm>]
     public IActionResult Get(Guid guid)
     {
-        return ReturnOkResult(() => { _acGroupsService.Get(guid); });
+        return ReturnOkResult(() => _acGroupsService.Get(guid));
     }
 
     [HttpPost]
     [Produces<AcGroupVm>]
     public IActionResult Post([FromBody] AcGroupIm acGroupIm)
     {
-        return ReturnOkResult(() => { _acGroupsService.Create(acGroupIm); });
+        return ReturnOkResult(() => _acGroupsService.Create(acGroupIm));
     }
-    
+
     [HttpPut]
     [Produces<AcGroupVm>]
     public IActionResult Post([FromBody] AcGroupUm acGroupUm)
     {
-        return ReturnOkResult(() => { _acGroupsService.Update(acGroupUm); });
+        return ReturnOkResult(() => _acGroupsService.Update(acGroupUm));
     }
 
     [HttpDelete]
     [Produces<DeleteResultVm>]
     public IActionResult Del([FromBody] AcGroupDm acGroupDm)
     {
-        return ReturnOkResult(() => { _acGroupsService.Delete(acGroupDm); });
+        return ReturnOkResult(() => _acGroupsService.Delete(acGroupDm));
     }
 }

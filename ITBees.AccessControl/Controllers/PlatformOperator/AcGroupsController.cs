@@ -2,11 +2,13 @@
 using ITBees.AccessControl.Services.PlatformOperator;
 using ITBees.Interfaces.Repository;
 using ITBees.RestfulApiControllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace ITBees.AccessControl.Controllers.PlatformOperator;
 
+[Authorize]
 public class AcGroupsController : RestfulControllerBase<AcGroupsController>
 {
     private readonly IAcGroupsService _acGroupsService;
@@ -21,6 +23,6 @@ public class AcGroupsController : RestfulControllerBase<AcGroupsController>
     [Produces<PaginatedResult<AcGroupVm>>]
     public IActionResult Get(int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
     {
-        return ReturnOkResult(() => { _acGroupsService.GetAll(page, pageSize, sortColumn, sortOrder); });
+        return ReturnOkResult(() => _acGroupsService.GetAll(page, pageSize, sortColumn, sortOrder));
     }
 }
