@@ -66,7 +66,7 @@ public class AllowedCardsService : IAllowedCardsService
             return new IsCardAllowedResult() { Allowed = false, CardGuid = null , AccessCardTypeId = card.AccessCardTypeId};
         }
 
-        return new IsCardAllowedResult() { Allowed = true, CardGuid = card.Guid };
+        return new IsCardAllowedResult() { Allowed = true, CardGuid = card.Guid , AccessCardTypeId = card.AccessCardTypeId };
     }
 
     public PaginatedResult<AllowedAccessCardVm> GetCards(int? page, int? pageSize, AllowedAccessCardSortOptions? sortColumn, SortOrder? sortOrder)
