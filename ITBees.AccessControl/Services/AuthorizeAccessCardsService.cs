@@ -42,7 +42,8 @@ class AuthorizeAccessCardsService : IAuthorizeAccessCardsService
                     OwnerEmail = accessCard.OwnerEmail,
                     OwnerName = accessCard.OwnerName,
                     ValidDate = accessCard.ValidDate,
-                    AccessCardTypeId = isCardAllowedToAuthorize.AccessCardTypeId
+                    AccessCardTypeId = isCardAllowedToAuthorize.AccessCardTypeId,
+                    CompanyGuid = accessCard.CompanyGuid.Value
                 });
                 result.AllowedAccessCards.Add(new AllowedAccessCardVm(resultAccessCard));
 
