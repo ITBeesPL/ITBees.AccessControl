@@ -37,6 +37,8 @@ namespace ITBees.AccessControl.Setup
     {
         public static void Register(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AcGroup>().HasKey(x => x.Guid);
+            modelBuilder.Entity<AcGroupAccessCards>().HasKey(x => new { x.AcGroupGuid, x.AccessCardGuid });
             modelBuilder.Entity<AccessCardType>().HasKey(x => x.Id);
             modelBuilder.Entity<AccessCard>().HasKey(x => x.Guid);
             modelBuilder.Entity<AccessCard>().HasIndex(x => x.CardId).IsUnique();
@@ -50,7 +52,7 @@ namespace ITBees.AccessControl.Setup
             modelBuilder.Entity<UnauthorizedRfidDevice>().HasKey(x => x.Guid);
             modelBuilder.Entity<UnauthorizedRfidDevice>().HasIndex(x => x.Mac).IsUnique();
             modelBuilder.Entity<DeviceHub>().HasDiscriminator<string>("DeviceType")
-                .HasValue<PhysicalDeviceHub>(nameof(PhysicalDeviceHub) +"Type");
+                .HasValue<PhysicalDeviceHub>(nameof(PhysicalDeviceHub) + "Type");
         }
     }
 }
