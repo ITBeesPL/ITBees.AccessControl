@@ -17,6 +17,6 @@ public class AcGroupAccessCardsService : IAcGroupAccessCardsService
     }
     public PaginatedResult<AcGroupAccessCardsVm> GetAll(int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
     {
-        return _accessCardGroupRoRepo.GetDataPaginated(x => true, new SortOptions(page, pageSize, sortColumn, sortOrder)).MapTo(x => new AcGroupAccessCardsVm(x));
+        return _accessCardGroupRoRepo.GetDataPaginated(x => true, new SortOptions(page, pageSize, sortColumn, sortOrder), x => x.CreatedBy, x => x.AcGroup, x => x.AccessCard).MapTo(x => new AcGroupAccessCardsVm(x));
     }
 }
