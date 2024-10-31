@@ -6,7 +6,7 @@ public class AccessCardVm
 {
     public Guid Guid { get; set; }
     public string  CardId { get; set; }
-    public DateTime LastUsedDate { get; set; }
+    public DateTime? LastUsedDate { get; set; }
     public string OwnerName { get; set; }
     public string OwnerEmail { get; set; }
     public string AccessCardType { get; set; }

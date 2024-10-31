@@ -31,7 +31,7 @@ class AccessCardsService : IAccessCardsService
             throw new FasApiErrorException(new FasApiErrorVm(message, StatusCodes.Status403Forbidden, ""));
         }
 
-        PaginatedResult<AccessCard> results = _accessCardsRoRepo.GetDataPaginated(x => x.IsActive, new SortOptions(page, pageSize, sortColumn, sortOrder),
+        PaginatedResult<AccessCard> results = _accessCardsRoRepo.GetDataPaginated(x => x.IsActive && x.CompanyGuid == cu.LastUsedCompanyGuid, new SortOptions(page, pageSize, sortColumn, sortOrder),
             x => x.AccessCardType, x => x.CreatedBy);
 
         var mappedResults = results.MapTo(ac => new AccessCardVm
@@ -40,7 +40,7 @@ class AccessCardsService : IAccessCardsService
             AccessCardType = ac.AccessCardType.Name,
             InvitationSend = ac.InvitationSend,
             Guid = ac.Guid,
-            LastUsedDate = ac.LastUsedDateTime.Value,
+            LastUsedDate = ac.LastUsedDateTime,
             OwnerEmail = ac.OwnerEmail,
             OwnerName = ac.OwnerName,
             ValidTo = ac.ValidDate,
