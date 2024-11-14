@@ -31,6 +31,7 @@ namespace ITBees.AccessControl.Setup
             services.AddScoped<IBuildingService, BuildingService>();
             services.AddScoped<IAcGroupsService, AcGroupsService>();
             services.AddScoped<IAcGroupAccessCardsService, AcGroupAccessCardsService>();
+            services.AddScoped<IAccessCardStatusService, AccessCardStatusService>();
         }
     }
 
