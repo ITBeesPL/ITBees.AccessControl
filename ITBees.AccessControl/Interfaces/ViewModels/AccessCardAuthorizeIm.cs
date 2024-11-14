@@ -1,6 +1,4 @@
-﻿using ITBees.Models.Hardware;
-
-namespace ITBees.AccessControl.Interfaces.ViewModels;
+﻿namespace ITBees.AccessControl.Interfaces.ViewModels;
 
 public class AccessCardAuthorizeIm
 {
@@ -12,4 +10,5 @@ public class AccessCardAuthorizeIm
     public bool InvitationSend { get; set; }
     public Guid? CompanyGuid { get; set; }
     public List<Guid> ParkingGuids { get; set; }
+    public List<Guid>? AcGroupGuids { get; set; }
 }
