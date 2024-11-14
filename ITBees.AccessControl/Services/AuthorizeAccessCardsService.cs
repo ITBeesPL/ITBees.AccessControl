@@ -3,6 +3,8 @@ using ITBees.AccessControl.Interfaces;
 using ITBees.AccessControl.Interfaces.ViewModels;
 using ITBees.Interfaces.Repository;
 using ITBees.Models.Hardware;
+using ITBees.RestfulApiControllers.Exceptions;
+using ITBees.RestfulApiControllers.Models;
 using ITBees.UserManager.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -39,41 +41,52 @@ class AuthorizeAccessCardsService : IAuthorizeAccessCardsService
             var isCardAllowedToAuthorize = _allowedCardsService.IsCardAllowedToAuthorize(accessCard.CardId);
             if (isCardAllowedToAuthorize.Allowed)
             {
-                var resultAccessCard = _accessCardRwRepo.InsertData(new AccessCard()
-                {
-                    CardId = accessCard.CardId,
-                    Created = DateTime.Now,
-                    IsActive = accessCard.IsActive,
-                    CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
-                    InvitationSend = accessCard.InvitationSend,
-                    OwnerEmail = accessCard.OwnerEmail,
-                    OwnerName = accessCard.OwnerName,
-                    ValidDate = accessCard.ValidDate,
-                    AccessCardTypeId = isCardAllowedToAuthorize.AccessCardTypeId,
-                    CompanyGuid = accessCard.CompanyGuid.Value
-                });
-
-                result.AllowedAccessCards.Add(new AllowedAccessCardVm(resultAccessCard));
-
                 try
                 {
-                    if (accessCard.AcGroupGuids != null || accessCard.AcGroupGuids.Any())
+                    var resultAccessCard = _accessCardRwRepo.InsertData(new AccessCard()
                     {
-                        var accessCardCardGroups = accessCard.AcGroupGuids.Select(x => new AccessCardCardGroup()
-                        {
-                            AccessCardGroupGuid = x,
-                            AccessCardGuid = resultAccessCard.Guid
-                        }).ToList();
+                        CardId = accessCard.CardId,
+                        Created = DateTime.Now,
+                        IsActive = accessCard.IsActive,
+                        CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
+                        InvitationSend = accessCard.InvitationSend,
+                        OwnerEmail = accessCard.OwnerEmail,
+                        OwnerName = accessCard.OwnerName,
+                        ValidDate = accessCard.ValidDate,
+                        AccessCardTypeId = isCardAllowedToAuthorize.AccessCardTypeId,
+                        CompanyGuid = accessCard.CompanyGuid.Value
+                    });
 
-                        _accessCardCardGroupRwRepo.InsertData(accessCardCardGroups);
+                    result.AllowedAccessCards.Add(new AllowedAccessCardVm(resultAccessCard));
+
+                    try
+                    {
+                        if (accessCard.AcGroupGuids != null || accessCard.AcGroupGuids.Any())
+                        {
+                            var accessCardCardGroups = accessCard.AcGroupGuids.Select(x => new AccessCardCardGroup()
+                            {
+                                AccessCardGroupGuid = x,
+                                AccessCardGuid = resultAccessCard.Guid
+                            }).ToList();
+
+                            _accessCardCardGroupRwRepo.InsertData(accessCardCardGroups);
+                        }
                     }
+                    catch (Exception e)
+                    {
+                        _logger.LogError($"Error while inserting groups to database, message {e.Message} {e.InnerException}");
+                    }
+
+                    _allowedCardsService.SetCardAsActive(isCardAllowedToAuthorize.CardGuid);
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError($"Error while inserting groups to database, message {e.Message} {e.InnerException}");
+                    if (e.InnerException.Message.Contains("Duplicate"))
+                    {
+                        throw new FasApiErrorException(new FasApiErrorVm("Card already registerd", 400, ""));
+                    }
+                    throw new FasApiErrorException(new FasApiErrorVm($"Error on saveing card {accessCard.CardId} to database, message :{e.InnerException.Message}", 400, ""));
                 }
-
-                _allowedCardsService.SetCardAsActive(isCardAllowedToAuthorize.CardGuid);
             }
             else
             {
