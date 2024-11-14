@@ -71,7 +71,8 @@ public class AcGroupsService : IAcGroupsService
 
     public PaginatedResult<AcGroupVm> GetAll(int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
     {
-        return _acGroupRoRepo.GetDataPaginated(x => true, new SortOptions(page, pageSize, sortColumn, sortOrder), x=>x.Company, x=>x.CreatedBy)
+        var cu = _aspCurrentUserService.GetCurrentSessionUser().CurrentUser.LastUsedCompanyGuid;
+        return _acGroupRoRepo.GetDataPaginated(x => x.CompanyGuid == cu, new SortOptions(page, pageSize, sortColumn, sortOrder), x=>x.Company, x=>x.CreatedBy)
             .MapTo(x => new AcGroupVm(x));
     }
 }

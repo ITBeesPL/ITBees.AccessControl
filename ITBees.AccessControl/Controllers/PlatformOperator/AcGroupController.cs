@@ -34,7 +34,7 @@ public class AcGroupController : RestfulControllerBase<AcGroupController>
 
     [HttpPut]
     [Produces<AcGroupVm>]
-    public IActionResult Post([FromBody] AcGroupUm acGroupUm)
+    public IActionResult Put([FromBody] AcGroupUm acGroupUm)
     {
         return ReturnOkResult(() => _acGroupsService.Update(acGroupUm));
     }
