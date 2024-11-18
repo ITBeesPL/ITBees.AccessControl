@@ -8,4 +8,6 @@ public class AuthorizeRfidDeviceIm
     public string DeviceName { get; set; }
     public Guid DeviceGuid { get; set; }
     public Guid? BuildingGuid { get; set; }
+    public int IpNetworkAddressId { get; set; }
+    public string IpAddress { get; set; }
 }
