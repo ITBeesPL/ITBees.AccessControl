@@ -3,6 +3,7 @@ using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Interfaces.ViewModels;
 using ITBees.FAS.SatelliteAgents.Database;
 using ITBees.Interfaces.Repository;
+using ITBees.Models.Hardware.Infrastructure;
 using ITBees.RestfulApiControllers.Exceptions;
 using ITBees.RestfulApiControllers.Models;
 using ITBees.UserManager.Interfaces;
@@ -18,13 +19,15 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
     private readonly IWriteOnlyRepository<AuthorizedAgent> _authorizedAgentRwRepo;
     private readonly IWriteOnlyRepository<AwaitingAgent> _awaitingAgentRwRepo;
     private readonly IReadOnlyRepository<UnauthorizedRfidDevice> _unauthorizedRfidDeviceRoRepo;
+    private readonly IWriteOnlyRepository<IpAddress> _ipAddressRwRepo;
 
     public AuthorizeRfidDeviceService(IAspCurrentUserService aspCurrentUserService,
         IWriteOnlyRepository<RfidReaderDevice> rfidReaderDeviceRwRepo,
         IWriteOnlyRepository<UnauthorizedRfidDevice> unauthorizedRfidDeviceRwRepo,
         IWriteOnlyRepository<AuthorizedAgent> authorizedAgentRwRepo,
         IWriteOnlyRepository<AwaitingAgent> awaitingAgentRwRepo,
-        IReadOnlyRepository<UnauthorizedRfidDevice> unauthorizedRfidDeviceRoRepo)
+        IReadOnlyRepository<UnauthorizedRfidDevice> unauthorizedRfidDeviceRoRepo,
+        IWriteOnlyRepository<IpAddress> ipAddressRwRepo)
     {
         _aspCurrentUserService = aspCurrentUserService;
         _rfidReaderDeviceRwRepo = rfidReaderDeviceRwRepo;
@@ -32,13 +35,23 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
         _authorizedAgentRwRepo = authorizedAgentRwRepo;
         _awaitingAgentRwRepo = awaitingAgentRwRepo;
         _unauthorizedRfidDeviceRoRepo = unauthorizedRfidDeviceRoRepo;
+        _ipAddressRwRepo = ipAddressRwRepo;
     }
     public RfidReaderDevice Authorize(AuthorizeRfidDeviceIm authorizeRfidDeviceIm)
     {
         try
         {
             var awaitingAgent = _unauthorizedRfidDeviceRoRepo.GetData(x => x.Mac == authorizeRfidDeviceIm.Mac).First();
-            
+
+            var ip = _ipAddressRwRepo.InsertData(new IpAddress()
+            {
+                IpNetworkAddressId = authorizeRfidDeviceIm.IpNetworkAddressId,
+                Ip = authorizeRfidDeviceIm.Ip,
+                IpVersion = IpVersionType.IPv4,
+                IsActive = true,
+                CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
+            });
+
             var result = _rfidReaderDeviceRwRepo.InsertData(new RfidReaderDevice()
             {
                 Mac = authorizeRfidDeviceIm.Mac,
@@ -47,7 +60,9 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
                 DeviceName = authorizeRfidDeviceIm.DeviceName,
                 LastConnection = null,
                 BuildingGuid = authorizeRfidDeviceIm.BuildingGuid,
-                IpAddressId = authorizeRfidDeviceIm.TargetIpAddressId
+                IpAddressId = ip.Id,
+                TriggerApiEndpoint = authorizeRfidDeviceIm.TriggerApiEndpoint,
+
             });
 
             _unauthorizedRfidDeviceRwRepo.DeleteData(x => x.Mac == authorizeRfidDeviceIm.Mac);
@@ -66,7 +81,7 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
                 SecretKey = string.Empty,
                 SystemInformation = $"Internal IP : {awaitingAgent.IpForwarded} external IP :{awaitingAgent.Ip}"
             });
-            
+
             return result;
         }
         catch (Exception e)

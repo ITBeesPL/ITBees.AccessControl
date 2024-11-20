@@ -9,7 +9,5 @@ public class AuthorizeRfidDeviceIm
     public Guid DeviceGuid { get; set; }
     public Guid? BuildingGuid { get; set; }
     public int IpNetworkAddressId { get; set; }
-    public string IpAddress { get; set; }
-    public int TargetIpAddressId { get; set; }
     public string TriggerApiEndpoint { get; set; }
 }
