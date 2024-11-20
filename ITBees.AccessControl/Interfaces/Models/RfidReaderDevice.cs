@@ -17,4 +17,5 @@ public class RfidReaderDevice
     public Guid? BuildingGuid { get; set; }
     public IpAddress IpAddress { get; set; }
     public int? IpAddressId { get; set; }
+    public string TriggerApiEndpoint { get; set; }
 }

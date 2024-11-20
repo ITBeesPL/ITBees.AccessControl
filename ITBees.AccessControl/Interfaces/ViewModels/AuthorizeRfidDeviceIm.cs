@@ -11,4 +11,5 @@ public class AuthorizeRfidDeviceIm
     public int IpNetworkAddressId { get; set; }
     public string IpAddress { get; set; }
     public int TargetIpAddressId { get; set; }
+    public string TriggerApiEndpoint { get; set; }
 }
