@@ -15,6 +15,7 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
 {
     private readonly IAspCurrentUserService _aspCurrentUserService;
     private readonly IWriteOnlyRepository<RfidReaderDevice> _rfidReaderDeviceRwRepo;
+    private readonly IWriteOnlyRepository<Device> _deviceRwRepo;
     private readonly IWriteOnlyRepository<UnauthorizedRfidDevice> _unauthorizedRfidDeviceRwRepo;
     private readonly IWriteOnlyRepository<AuthorizedAgent> _authorizedAgentRwRepo;
     private readonly IWriteOnlyRepository<AwaitingAgent> _awaitingAgentRwRepo;
@@ -23,6 +24,7 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
 
     public AuthorizeRfidDeviceService(IAspCurrentUserService aspCurrentUserService,
         IWriteOnlyRepository<RfidReaderDevice> rfidReaderDeviceRwRepo,
+        IWriteOnlyRepository<Device> deviceRwRepo,
         IWriteOnlyRepository<UnauthorizedRfidDevice> unauthorizedRfidDeviceRwRepo,
         IWriteOnlyRepository<AuthorizedAgent> authorizedAgentRwRepo,
         IWriteOnlyRepository<AwaitingAgent> awaitingAgentRwRepo,
@@ -31,6 +33,7 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
     {
         _aspCurrentUserService = aspCurrentUserService;
         _rfidReaderDeviceRwRepo = rfidReaderDeviceRwRepo;
+        _deviceRwRepo = deviceRwRepo;
         _unauthorizedRfidDeviceRwRepo = unauthorizedRfidDeviceRwRepo;
         _authorizedAgentRwRepo = authorizedAgentRwRepo;
         _awaitingAgentRwRepo = awaitingAgentRwRepo;
@@ -67,6 +70,13 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
 
             _unauthorizedRfidDeviceRwRepo.DeleteData(x => x.Mac == authorizeRfidDeviceIm.Mac);
             _awaitingAgentRwRepo.DeleteData(x => x.Mac == authorizeRfidDeviceIm.Mac);
+            var device = _deviceRwRepo.InsertData(new Device()
+            {
+                CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
+                CreatedDate = DateTime.Now,
+                IsAvailable = true,
+                Name = authorizeRfidDeviceIm.DeviceName
+            });
             _authorizedAgentRwRepo.InsertData(new AuthorizedAgent()
             {
                 Mac = authorizeRfidDeviceIm.Mac,
@@ -77,7 +87,7 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
                 Description = authorizeRfidDeviceIm.DeviceName,
                 DisplayName = authorizeRfidDeviceIm.DeviceName,
                 LastConnectedDate = awaitingAgent.FirstSeenDate,
-                DeviceGuid = authorizeRfidDeviceIm.DeviceGuid,
+                DeviceGuid = device.Guid,
                 SecretKey = string.Empty,
                 SystemInformation = $"Internal IP : {awaitingAgent.IpForwarded} external IP :{awaitingAgent.Ip}"
             });
