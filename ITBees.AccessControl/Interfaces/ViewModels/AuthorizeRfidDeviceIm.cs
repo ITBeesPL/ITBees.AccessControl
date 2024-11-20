@@ -10,4 +10,5 @@ public class AuthorizeRfidDeviceIm
     public Guid? BuildingGuid { get; set; }
     public int IpNetworkAddressId { get; set; }
     public string IpAddress { get; set; }
+    public int TargetIpAddressId { get; set; }
 }

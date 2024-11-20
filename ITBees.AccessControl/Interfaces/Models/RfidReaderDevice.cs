@@ -1,5 +1,6 @@
 ﻿using ITBees.Models.Buildings;
 using ITBees.Models.Companies;
+using ITBees.Models.Hardware.Infrastructure;
 
 namespace ITBees.AccessControl.Interfaces.Models;
 
@@ -14,4 +15,6 @@ public class RfidReaderDevice
     public string DeviceName { get; set; }
     public Building Building { get; set; }
     public Guid? BuildingGuid { get; set; }
+    public IpAddress IpAddress { get; set; }
+    public int? IpAddressId { get; set; }
 }
