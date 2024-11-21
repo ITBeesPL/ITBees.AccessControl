@@ -3,6 +3,7 @@ using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Interfaces.ViewModels;
 using ITBees.FAS.SatelliteAgents.Database;
 using ITBees.Interfaces.Repository;
+using ITBees.Models.Hardware;
 using ITBees.Models.Hardware.Infrastructure;
 using ITBees.RestfulApiControllers.Exceptions;
 using ITBees.RestfulApiControllers.Models;
