@@ -74,15 +74,7 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
 
             _unauthorizedRfidDeviceRwRepo.DeleteData(x => x.Mac == authorizeDeviceIm.Mac);
             _awaitingAgentRwRepo.DeleteData(x => x.Mac == authorizeDeviceIm.Mac);
-            var device = _deviceRwRepo.InsertData(new Device()
-            {
-                CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
-                CreatedDate = DateTime.Now,
-                IsAvailable = true,
-                Name = authorizeDeviceIm.DeviceName,
-                Description = ""
-            });
-
+           
             var ipForwarded = string.Empty;
             var externalIp = string.Empty;
             var systemInformation = string.Empty;
@@ -110,10 +102,9 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
                 Description = authorizeDeviceIm.DeviceName,
                 DisplayName = authorizeDeviceIm.DeviceName,
                 LastConnectedDate = firstSeenDate,
-                DeviceGuid = device.Guid,
+                DeviceGuid = authorizeDeviceIm.DeviceGuid,
                 SecretKey = string.Empty,
                 SystemInformation = systemInformation,
-                Device = 
             });
 
             return result;
