@@ -75,7 +75,8 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
                 CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
                 CreatedDate = DateTime.Now,
                 IsAvailable = true,
-                Name = authorizeRfidDeviceIm.DeviceName
+                Name = authorizeRfidDeviceIm.DeviceName,
+                Description = ""
             });
             _authorizedAgentRwRepo.InsertData(new AuthorizedAgent()
             {
