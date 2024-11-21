@@ -50,6 +50,7 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
         {
             var unauthorizedRfidDevice = _unauthorizedRfidDeviceRoRepo.GetData(x => x.Mac == authorizeDeviceIm.Mac).FirstOrDefault();
             var awaitingAgent = _awaitingAgentRoRepo.GetData(x => x.Mac == authorizeDeviceIm.Mac).FirstOrDefault();
+            var currentUserGuid = _aspCurrentUserService.GetCurrentUserGuid().Value;
 
             var ip = _ipAddressRwRepo.InsertData(new IpAddress()
             {
@@ -57,7 +58,7 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
                 Ip = authorizeDeviceIm.Ip,
                 IpVersion = IpVersionType.IPv4,
                 IsActive = true,
-                CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
+                CreatedByGuid = currentUserGuid,
             });
 
             var result = _rfidReaderDeviceRwRepo.InsertData(new RfidReaderDevice()
@@ -91,21 +92,32 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
                 systemInformation = awaitingAgent.SystemInformation;
             }
 
+            var device = _deviceRwRepo.InsertData(new Device()
+            {
+                CreatedByGuid = currentUserGuid,
+                CreatedDate = DateTime.Now,
+                Description = systemInformation,
+                DeviceTypeId = authorizeDeviceIm.DeviceTypeId,
+                IsAvailable = true,
+                Name = authorizeDeviceIm.DeviceName
+            });
+
             var firstSeenDate = awaitingAgent.LastConnectedDate;
 
             _authorizedAgentRwRepo.InsertData(new AuthorizedAgent()
             {
                 Mac = authorizeDeviceIm.Mac,
-                AcceptedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
+                AcceptedByGuid = currentUserGuid,
                 AcceptedDate = DateTime.Now,
                 BuildingGuid = authorizeDeviceIm.BuildingGuid,
                 CompanyGuid = authorizeDeviceIm.CompanyGuid,
                 Description = authorizeDeviceIm.DeviceName,
                 DisplayName = authorizeDeviceIm.DeviceName,
                 LastConnectedDate = firstSeenDate,
-                DeviceGuid = authorizeDeviceIm.DeviceGuid,
+                DeviceGuid = device.Guid,
                 SecretKey = string.Empty,
                 SystemInformation = systemInformation,
+                DeviceTypeId = authorizeDeviceIm.DeviceTypeId
             });
 
             return result;
