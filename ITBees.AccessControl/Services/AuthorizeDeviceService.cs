@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace ITBees.AccessControl.Services;
 
-class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
+class AuthorizeDeviceService : IAuthorizeRfidDeviceService
 {
     private readonly IAspCurrentUserService _aspCurrentUserService;
     private readonly IWriteOnlyRepository<RfidReaderDevice> _rfidReaderDeviceRwRepo;
@@ -19,15 +19,17 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
     private readonly IWriteOnlyRepository<UnauthorizedRfidDevice> _unauthorizedRfidDeviceRwRepo;
     private readonly IWriteOnlyRepository<AuthorizedAgent> _authorizedAgentRwRepo;
     private readonly IWriteOnlyRepository<AwaitingAgent> _awaitingAgentRwRepo;
+    private readonly IReadOnlyRepository<AwaitingAgent> _awaitingAgentRoRepo;
     private readonly IReadOnlyRepository<UnauthorizedRfidDevice> _unauthorizedRfidDeviceRoRepo;
     private readonly IWriteOnlyRepository<IpAddress> _ipAddressRwRepo;
 
-    public AuthorizeRfidDeviceService(IAspCurrentUserService aspCurrentUserService,
+    public AuthorizeDeviceService(IAspCurrentUserService aspCurrentUserService,
         IWriteOnlyRepository<RfidReaderDevice> rfidReaderDeviceRwRepo,
         IWriteOnlyRepository<Device> deviceRwRepo,
         IWriteOnlyRepository<UnauthorizedRfidDevice> unauthorizedRfidDeviceRwRepo,
         IWriteOnlyRepository<AuthorizedAgent> authorizedAgentRwRepo,
         IWriteOnlyRepository<AwaitingAgent> awaitingAgentRwRepo,
+        IReadOnlyRepository<AwaitingAgent> awaitingAgentRoRepo,
         IReadOnlyRepository<UnauthorizedRfidDevice> unauthorizedRfidDeviceRoRepo,
         IWriteOnlyRepository<IpAddress> ipAddressRwRepo)
     {
@@ -37,19 +39,21 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
         _unauthorizedRfidDeviceRwRepo = unauthorizedRfidDeviceRwRepo;
         _authorizedAgentRwRepo = authorizedAgentRwRepo;
         _awaitingAgentRwRepo = awaitingAgentRwRepo;
+        _awaitingAgentRoRepo = awaitingAgentRoRepo;
         _unauthorizedRfidDeviceRoRepo = unauthorizedRfidDeviceRoRepo;
         _ipAddressRwRepo = ipAddressRwRepo;
     }
-    public RfidReaderDevice Authorize(AuthorizeRfidDeviceIm authorizeRfidDeviceIm)
+    public RfidReaderDevice Authorize(AuthorizeDeviceIm authorizeDeviceIm)
     {
         try
         {
-            var awaitingAgent = _unauthorizedRfidDeviceRoRepo.GetData(x => x.Mac == authorizeRfidDeviceIm.Mac).First();
+            var unauthorizedRfidDevice = _unauthorizedRfidDeviceRoRepo.GetData(x => x.Mac == authorizeDeviceIm.Mac).FirstOrDefault();
+            var awaitingAgent = _awaitingAgentRoRepo.GetData(x => x.Mac == authorizeDeviceIm.Mac).FirstOrDefault();
 
             var ip = _ipAddressRwRepo.InsertData(new IpAddress()
             {
-                IpNetworkAddressId = authorizeRfidDeviceIm.IpNetworkAddressId,
-                Ip = authorizeRfidDeviceIm.Ip,
+                IpNetworkAddressId = authorizeDeviceIm.IpNetworkAddressId,
+                Ip = authorizeDeviceIm.Ip,
                 IpVersion = IpVersionType.IPv4,
                 IsActive = true,
                 CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
@@ -57,40 +61,59 @@ class AuthorizeRfidDeviceService : IAuthorizeRfidDeviceService
 
             var result = _rfidReaderDeviceRwRepo.InsertData(new RfidReaderDevice()
             {
-                Mac = authorizeRfidDeviceIm.Mac,
-                Ip = authorizeRfidDeviceIm.Ip,
-                CompanyGuid = authorizeRfidDeviceIm.CompanyGuid,
-                DeviceName = authorizeRfidDeviceIm.DeviceName,
+                Mac = authorizeDeviceIm.Mac,
+                Ip = authorizeDeviceIm.Ip,
+                CompanyGuid = authorizeDeviceIm.CompanyGuid,
+                DeviceName = authorizeDeviceIm.DeviceName,
                 LastConnection = null,
-                BuildingGuid = authorizeRfidDeviceIm.BuildingGuid,
+                BuildingGuid = authorizeDeviceIm.BuildingGuid,
                 IpAddressId = ip.Id,
-                TriggerApiEndpoint = authorizeRfidDeviceIm.TriggerApiEndpoint,
+                TriggerApiEndpoint = authorizeDeviceIm.TriggerApiEndpoint,
 
             });
 
-            _unauthorizedRfidDeviceRwRepo.DeleteData(x => x.Mac == authorizeRfidDeviceIm.Mac);
-            _awaitingAgentRwRepo.DeleteData(x => x.Mac == authorizeRfidDeviceIm.Mac);
+            _unauthorizedRfidDeviceRwRepo.DeleteData(x => x.Mac == authorizeDeviceIm.Mac);
+            _awaitingAgentRwRepo.DeleteData(x => x.Mac == authorizeDeviceIm.Mac);
             var device = _deviceRwRepo.InsertData(new Device()
             {
                 CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
                 CreatedDate = DateTime.Now,
                 IsAvailable = true,
-                Name = authorizeRfidDeviceIm.DeviceName,
+                Name = authorizeDeviceIm.DeviceName,
                 Description = ""
             });
+
+            var ipForwarded = string.Empty;
+            var externalIp = string.Empty;
+            var systemInformation = string.Empty;
+
+            if (unauthorizedRfidDevice != null)
+            {
+                ipForwarded = unauthorizedRfidDevice.IpForwarded;
+                externalIp = unauthorizedRfidDevice.Ip;
+                systemInformation = $"Internal IP : {ipForwarded} external IP :{externalIp}";
+            }
+            else
+            {
+                systemInformation = awaitingAgent.SystemInformation;
+            }
+
+            var firstSeenDate = awaitingAgent.LastConnectedDate;
+
             _authorizedAgentRwRepo.InsertData(new AuthorizedAgent()
             {
-                Mac = authorizeRfidDeviceIm.Mac,
+                Mac = authorizeDeviceIm.Mac,
                 AcceptedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
                 AcceptedDate = DateTime.Now,
-                BuildingGuid = authorizeRfidDeviceIm.BuildingGuid,
-                CompanyGuid = authorizeRfidDeviceIm.CompanyGuid,
-                Description = authorizeRfidDeviceIm.DeviceName,
-                DisplayName = authorizeRfidDeviceIm.DeviceName,
-                LastConnectedDate = awaitingAgent.FirstSeenDate,
+                BuildingGuid = authorizeDeviceIm.BuildingGuid,
+                CompanyGuid = authorizeDeviceIm.CompanyGuid,
+                Description = authorizeDeviceIm.DeviceName,
+                DisplayName = authorizeDeviceIm.DeviceName,
+                LastConnectedDate = firstSeenDate,
                 DeviceGuid = device.Guid,
                 SecretKey = string.Empty,
-                SystemInformation = $"Internal IP : {awaitingAgent.IpForwarded} external IP :{awaitingAgent.Ip}"
+                SystemInformation = systemInformation,
+                Device = 
             });
 
             return result;

@@ -1,6 +1,6 @@
 ﻿namespace ITBees.AccessControl.Interfaces.ViewModels;
 
-public class AuthorizeRfidDeviceIm
+public class AuthorizeDeviceIm
 {
     public string Ip { get; set; }
     public string Mac { get; set; }
@@ -10,4 +10,5 @@ public class AuthorizeRfidDeviceIm
     public Guid? BuildingGuid { get; set; }
     public int IpNetworkAddressId { get; set; }
     public string TriggerApiEndpoint { get; set; }
+    public Guid DeviceTypeGuid { get; set; }
 }
