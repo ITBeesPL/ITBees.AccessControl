@@ -3,11 +3,9 @@ using ITBees.AccessControl.Controllers.PlatformInfrastructure;
 using ITBees.AccessControl.Interfaces;
 using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Services.PlatformAdmin.Models;
-using ITBees.FAS.SatelliteAgents.Database;
 using ITBees.Interfaces.Repository;
 using ITBees.Models.Buildings;
 using ITBees.Models.Companies;
-using ITBees.Models.Hardware;
 using ITBees.UserManager.Interfaces;
 
 namespace ITBees.AccessControl.Services.PlatformAdmin;
