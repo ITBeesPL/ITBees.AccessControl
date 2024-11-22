@@ -99,7 +99,9 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
                 Description = systemInformation,
                 DeviceTypeId = authorizeDeviceIm.DeviceTypeId,
                 IsAvailable = true,
-                Name = authorizeDeviceIm.DeviceName
+                Name = authorizeDeviceIm.DeviceName,
+                CompanyGuid = authorizeDeviceIm.CompanyGuid,
+                BuildingGuid = authorizeDeviceIm.BuildingGuid
             });
 
             var firstSeenDate = awaitingAgent.LastConnectedDate;
