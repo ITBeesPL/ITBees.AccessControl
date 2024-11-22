@@ -119,7 +119,8 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
                 DeviceGuid = device.Guid,
                 SecretKey = string.Empty,
                 SystemInformation = systemInformation,
-                DeviceTypeId = authorizeDeviceIm.DeviceTypeId
+                DeviceTypeId = authorizeDeviceIm.DeviceTypeId,
+                IpAddressId = ip.Id
             });
 
             return result;
