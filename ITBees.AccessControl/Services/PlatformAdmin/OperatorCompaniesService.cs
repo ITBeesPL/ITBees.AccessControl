@@ -7,6 +7,7 @@ using ITBees.Models.Buildings;
 using ITBees.Models.Companies;
 using ITBees.Models.Hardware;
 using ITBees.UserManager.Interfaces;
+using ITBees.UserManager.Interfaces.Models;
 
 namespace ITBees.AccessControl.Services.PlatformAdmin;
 
@@ -16,20 +17,27 @@ public class OperatorCompaniesService : IOperatorCompaniesService
     private readonly IWriteOnlyRepository<Company> _companyRwRepo;
     private readonly IAspCurrentUserService _aspCurrentUserService;
     private readonly IReadOnlyRepository<Building> _buildingRoRepo;
+    private readonly IWriteOnlyRepository<Building> _buildingRwRepo;
     private readonly IReadOnlyRepository<Device> _devicesRoRepo;
+    private readonly INewUserRegistrationService _newUserRegistrationService;
+    private readonly IUserManager _userManager;
 
     public OperatorCompaniesService(
         IReadOnlyRepository<Company> companyRoRepo,
         IWriteOnlyRepository<Company> companyRwRepo,
         IAspCurrentUserService aspCurrentUserService,
         IReadOnlyRepository<Building> buildingRoRepo,
-        IReadOnlyRepository<Device> devicesRoRepo)
+        IWriteOnlyRepository<Building> buildingRwRepo,
+        IReadOnlyRepository<Device> devicesRoRepo,
+        INewUserRegistrationService newUserRegistrationService)
     {
         _companyRoRepo = companyRoRepo;
         _companyRwRepo = companyRwRepo;
         _aspCurrentUserService = aspCurrentUserService;
         _buildingRoRepo = buildingRoRepo;
+        _buildingRwRepo = buildingRwRepo;
         _devicesRoRepo = devicesRoRepo;
+        _newUserRegistrationService = newUserRegistrationService;
     }
 
     public PaginatedResult<OperatorCompanyVm> Get(string? search, int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
@@ -95,22 +103,52 @@ public class OperatorCompaniesService : IOperatorCompaniesService
         return _companyRoRepo.GetData(x => x.Guid == guid).Select(x => new OperatorCompanyVm(x)).First();
     }
 
-    public OperatorCompanyVm Create(OperatorCompanyIm x)
+    public async Task<OperatorCompanyVm> Create(OperatorCompanyIm x)
     {
+        var createdByGuid = _aspCurrentUserService.GetCurrentUser().Guid;
+
         var company = _companyRwRepo.InsertData(new Company()
         {
             City = x.City,
             CompanyName = x.CompanyName,
             CompanyShortName = x.CompanyShortName,
             Created = DateTime.Now,
-            CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid(),
+            CreatedByGuid = createdByGuid,
             IsActive = x.IsActive,
             PostCode = x.PostCode,
             Nip = x.Nip,
-            Street = x.Street
+            Street = x.Street,
         });
 
-        var createdCompany = _companyRoRepo.GetData(x => x.Guid == company.Guid, x => x.CreatedBy).First();
+        
+        NewUserRegistrationWithInvitationIm newUserRegistrationIm = new NewUserRegistrationWithInvitationIm()
+        {
+            CompanyGuid = company.Guid,
+            Email = x.EmployeEmail,
+            FirstName = x.EmployeFirstName,
+            LastName = x.EmployeLastName,
+            Language = _aspCurrentUserService.GetCurrentUser().Language.Code,
+            Phone = string.Empty
+        };
+
+
+        Building building = null;
+        if (string.IsNullOrEmpty(x.BuildingName) == false)
+        {
+            building = _buildingRwRepo.InsertData(new Building()
+            {
+                CompanyGuid = company.Guid,
+                Created = DateTime.Now,
+                CreatedByGuid = createdByGuid,
+                GpsLocation = null,
+                IsActive = true,
+                Name = x.BuildingName,
+            });
+        }
+        
+        await _newUserRegistrationService.CreateAndInviteNewUserToCompany(newUserRegistrationIm);
+
+        var createdCompany = _companyRoRepo.GetData(x => x.Guid == company.Guid, x => x.CreatedBy, x=>x.Owner).First();
         return new OperatorCompanyVm(createdCompany);
     }
 
