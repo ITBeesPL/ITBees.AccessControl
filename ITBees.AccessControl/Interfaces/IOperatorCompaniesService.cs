@@ -9,6 +9,6 @@ public interface IOperatorCompaniesService
 {
     PaginatedResult<OperatorCompanyVm> Get(string search, int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder);
     OperatorCompanyVm Get(Guid guid);
-    OperatorCompanyVm Create(OperatorCompanyIm x);
+    Task<OperatorCompanyVm> Create(OperatorCompanyIm x);
     OperatorCompanyVm UpdateCompany(OperatorCompanyUm operatorCompanyUm);
 }

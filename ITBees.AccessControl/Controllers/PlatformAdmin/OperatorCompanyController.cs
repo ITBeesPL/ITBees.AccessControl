@@ -29,8 +29,8 @@ public class OperatorCompanyController : RestfulControllerBase<OperatorCompanyCo
 
     [HttpPost]
     [Produces<OperatorCompanyVm>]
-    public IActionResult Post([FromBody] OperatorCompanyIm operatorCompanyIm)
+    public async Task<IActionResult> Post([FromBody] OperatorCompanyIm operatorCompanyIm)
     {
-        return ReturnOkResult(() => _operatorCompaniesService.Create(operatorCompanyIm));
+        return await ReturnOkResultAsync(async () => await _operatorCompaniesService.Create(operatorCompanyIm));
     }
 }
