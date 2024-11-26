@@ -13,8 +13,8 @@ public class BuildingVm
     public BuildingVm(Building x)
     {
         Guid = x.Guid;
-        BuildingDeviceHubs = x.BuildingDeviceHubs.Select(x=>new BuildingDeviceHubVm(x)).ToList();
-        GpsLocation = new GpsLocationVm(x.GpsLocation);
+        BuildingDeviceHubs = x.BuildingDeviceHubs?.Select(x=>new BuildingDeviceHubVm(x)).ToList();
+        GpsLocation = x.GpsLocation != null ? new GpsLocationVm(x.GpsLocation) : null;
         Name = x.Name;
         CreatedBy = x.CreatedBy?.DisplayName;
         Created = x.Created;

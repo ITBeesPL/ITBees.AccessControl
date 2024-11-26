@@ -7,11 +7,11 @@ public class ReceivedRfidSignalIm
     public string Ts { get; }
     public string Inout { get; }
     public string Id { get; }
-    public string Name { get; }
+    public string? Name { get; }
     public string Ip { get; }
     public string Mac { get; }
 
-    public ReceivedRfidSignalIm(string mac, string ip, string name, 
+    public ReceivedRfidSignalIm(string mac, string ip, string? name, 
         string id, string inout, string ts, string io, string put)
     {
         Mac = mac;
