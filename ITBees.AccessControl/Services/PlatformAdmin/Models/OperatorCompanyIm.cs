@@ -19,6 +19,7 @@ public class OperatorCompanyIm
     public string? EmployeFirstName { get; set; }
     public string? EmployeLastName { get; set; }
     public bool EmployeeSendInvitation { get; set; }
+    public Guid? UserRoleGuid { get; set; }
 
     public string? NetworkIpAddress { get; set; }
     public string? NetworkMask { get; set; }
