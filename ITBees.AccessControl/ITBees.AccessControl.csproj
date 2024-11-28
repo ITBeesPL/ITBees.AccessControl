@@ -14,8 +14,6 @@
     <PackageReference Include="ITBees.UserManager" Version="8.0.187" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="ITBees.FAS.SatelliteAgents" Version="8.0.76" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="ITBees.RestfulApiControllers" Version="8.0.21" />
   </ItemGroup>
 
@@ -27,5 +25,4 @@
     <Folder Include="Services\PlatformAdmin\Models\" />
     <Folder Include="Translations\" />
   </ItemGroup>
-
 </Project>
