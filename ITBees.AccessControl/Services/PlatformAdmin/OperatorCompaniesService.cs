@@ -124,9 +124,9 @@ public class OperatorCompaniesService : IOperatorCompaniesService
         NewUserRegistrationWithInvitationIm newUserRegistrationIm = new NewUserRegistrationWithInvitationIm()
         {
             CompanyGuid = company.Guid,
-            Email = x.EmployeEmail,
-            FirstName = x.EmployeFirstName,
-            LastName = x.EmployeLastName,
+            Email = x.EmployeeEmail,
+            FirstName = x.EmployeeFirstName,
+            LastName = x.EmployeeLastName,
             Language = _aspCurrentUserService.GetCurrentUser().Language.Code,
             Phone = string.Empty,
             UserRole = x.UserRoleGuid

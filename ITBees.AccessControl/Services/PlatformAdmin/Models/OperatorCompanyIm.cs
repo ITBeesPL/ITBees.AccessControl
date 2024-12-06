@@ -15,9 +15,9 @@ public class OperatorCompanyIm
     public string? BuildingName { get; set; }
     public string? BuildingPostCode { get; set; }
     public string? BuildingCity { get; set; }
-    public string? BuilidingStreet { get; set; }
-    public string? EmployeFirstName { get; set; }
-    public string? EmployeLastName { get; set; }
+    public string? BuildingStreet { get; set; }
+    public string? EmployeeFirstName { get; set; }
+    public string? EmployeeLastName { get; set; }
     public bool EmployeeSendInvitation { get; set; }
     public Guid? UserRoleGuid { get; set; }
 
@@ -25,5 +25,5 @@ public class OperatorCompanyIm
     public string? NetworkMask { get; set; }
     public string? NetworkGateway { get; set; }
     public string? NetworkDns { get; set; }
-    public string? EmployeEmail { get; set; }
+    public string? EmployeeEmail { get; set; }
 }
