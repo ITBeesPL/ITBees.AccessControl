@@ -44,7 +44,7 @@ class AccessCardsService : IAccessCardsService
             OwnerEmail = ac.OwnerEmail,
             OwnerName = ac.OwnerName,
             ValidTo = ac.ValidDate,
-            AccessCardGroups = ac.AccessCardCardGroups.Select(x=>new AccessCardGroupVm(x.AccessCardGroup)).ToList()
+            AccessCardGroups = ac.AccessCardCardGroups?.Select(x=>new AccessCardGroupVm(x.AccessCardGroup)).ToList()
         });
         return mappedResults;
     }
