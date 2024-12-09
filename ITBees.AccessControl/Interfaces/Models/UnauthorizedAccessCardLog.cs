@@ -1,4 +1,6 @@
-﻿namespace ITBees.AccessControl.Interfaces.Models;
+﻿using ITBees.Models.Hardware;
+
+namespace ITBees.AccessControl.Interfaces.Models;
 
 public class UnauthorizedAccessCardLog
 {
