@@ -128,7 +128,7 @@ public class OperatorCompaniesService : IOperatorCompaniesService
             LastName = x.EmployeeLastName,
             Language = _aspCurrentUserService.GetCurrentUser().Language.Code,
             Phone = string.Empty,
-            UserRole = x.UserRoleGuid
+            UserRoleGuid = x.UserRoleGuid
         };
 
 
