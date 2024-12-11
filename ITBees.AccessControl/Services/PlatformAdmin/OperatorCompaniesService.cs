@@ -20,7 +20,6 @@ public class OperatorCompaniesService : IOperatorCompaniesService
     private readonly IWriteOnlyRepository<Building> _buildingRwRepo;
     private readonly IReadOnlyRepository<Device> _devicesRoRepo;
     private readonly INewUserRegistrationService _newUserRegistrationService;
-    private readonly IUserManager _userManager;
 
     public OperatorCompaniesService(
         IReadOnlyRepository<Company> companyRoRepo,

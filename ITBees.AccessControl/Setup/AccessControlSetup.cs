@@ -16,7 +16,7 @@ namespace ITBees.AccessControl.Setup
     {
         public static void Register<TContext, TIdentityUser, TAccessCard>(IServiceCollection services,
             IConfigurationRoot configurationRoot) where TContext : DbContext
-            where TIdentityUser : IdentityUser
+            where TIdentityUser : IdentityUser<Guid>
             where TAccessCard : AccessCard, new()
         {
             services.AddScoped<IAccessControlSignalReceived, AccessControlSignalReceived>();
