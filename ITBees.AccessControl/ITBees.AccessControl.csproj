@@ -25,4 +25,15 @@
     <Folder Include="Services\PlatformAdmin\Models\" />
     <Folder Include="Translations\" />
   </ItemGroup>
+  
+<!--  <ItemGroup>-->
+<!--      <ProjectReference Include="..\..\ITBees.FAS.Setup\ITBees.FAS.Setup\ITBees.FAS.Setup.csproj" />-->
+<!--      <ProjectReference Include="..\..\ITBees.Interfaces\ITBees.Interfaces\ITBees.Interfaces.csproj" />-->
+<!--      <ProjectReference Include="..\..\ITBees.Models\ITBees.Models\ITBees.Models.csproj" />-->
+<!--      <ProjectReference Include="..\..\ITBees.UserManager\ITBees.UserManager\ITBees.UserManager.csproj" />-->
+<!--      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />-->
+<!--      <ProjectReference Include="..\..\ITBees.FAS.SatelliteAgents\ITBees.FAS.SatelliteAgents\ITBees.FAS.SatelliteAgents.csproj" />-->
+<!--      <ProjectReference Include="..\..\ITBees.RestfulApiControllers\ITBees.RestfulApiControllers\ITBees.RestfulApiControllers.csproj" />-->
+<!--  </ItemGroup>-->
+  
 </Project>
