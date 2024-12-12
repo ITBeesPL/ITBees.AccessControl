@@ -10,8 +10,8 @@
   <ItemGroup>
     <PackageReference Include="ITBees.Fas.Setup" Version="8.0.9" />
     <PackageReference Include="ITBees.Interfaces" Version="8.0.48" />
-    <PackageReference Include="ITBees.Models" Version="8.0.68" />
-    <PackageReference Include="ITBees.UserManager" Version="8.0.216" />
+    <PackageReference Include="ITBees.Models" Version="8.0.69" />
+    <PackageReference Include="ITBees.UserManager" Version="8.0.217" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="ITBees.FAS.SatelliteAgents" Version="8.0.96" />
     <PackageReference Include="ITBees.RestfulApiControllers" Version="8.0.21" />
