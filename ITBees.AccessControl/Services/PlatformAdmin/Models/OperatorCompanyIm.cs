@@ -24,4 +24,5 @@ public class OperatorCompanyIm
     public string? NetworkMask { get; set; }
     public string? NetworkGateway { get; set; }
     public string? NetworkDns { get; set; }
+    public List<string>? Zones { get; set; }
 }
