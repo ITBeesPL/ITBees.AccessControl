@@ -119,7 +119,7 @@ public class OperatorCompaniesService : IOperatorCompaniesService
             IsActive = x.IsActive,
             PostCode = x.PostCode,
             Nip = x.Nip,
-            Street = x.Street,
+            Street = x.Street
         });
 
         
