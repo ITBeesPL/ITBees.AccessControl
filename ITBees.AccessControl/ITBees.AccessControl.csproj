@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="ITBees.Fas.Setup" Version="8.0.11" />
-    <PackageReference Include="ITBees.Interfaces" Version="8.0.49" />
+    <PackageReference Include="ITBees.Interfaces" Version="8.0.51" />
     <PackageReference Include="ITBees.Models" Version="8.0.71" />
     <PackageReference Include="ITBees.UserManager" Version="8.0.228" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
