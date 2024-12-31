@@ -20,7 +20,6 @@ public class OperatorCompaniesService : IOperatorCompaniesService
     private readonly IWriteOnlyRepository<Building> _buildingRwRepo;
     private readonly IReadOnlyRepository<Device> _devicesRoRepo;
     private readonly INewUserRegistrationService _newUserRegistrationService;
-    private readonly ICustomZoneService _customZoneService;
 
     public OperatorCompaniesService(
         IReadOnlyRepository<Company> companyRoRepo,
@@ -29,8 +28,7 @@ public class OperatorCompaniesService : IOperatorCompaniesService
         IReadOnlyRepository<Building> buildingRoRepo,
         IWriteOnlyRepository<Building> buildingRwRepo,
         IReadOnlyRepository<Device> devicesRoRepo,
-        INewUserRegistrationService newUserRegistrationService,
-        ICustomZoneService customZoneService)
+        INewUserRegistrationService newUserRegistrationService)
     {
         _companyRoRepo = companyRoRepo;
         _companyRwRepo = companyRwRepo;
@@ -39,7 +37,6 @@ public class OperatorCompaniesService : IOperatorCompaniesService
         _buildingRwRepo = buildingRwRepo;
         _devicesRoRepo = devicesRoRepo;
         _newUserRegistrationService = newUserRegistrationService;
-        _customZoneService = customZoneService;
     }
 
     public PaginatedResult<OperatorCompanyVm> Get(string? search, int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
