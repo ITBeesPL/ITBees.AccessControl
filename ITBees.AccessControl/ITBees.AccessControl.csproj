@@ -11,9 +11,9 @@
     <PackageReference Include="ITBees.Fas.Setup" Version="8.0.11" />
     <PackageReference Include="ITBees.Interfaces" Version="8.0.52" />
     <PackageReference Include="ITBees.Models" Version="8.0.73" />
-    <PackageReference Include="ITBees.UserManager" Version="8.0.235" />
+    <PackageReference Include="ITBees.UserManager" Version="8.0.237" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="ITBees.FAS.SatelliteAgents" Version="8.0.107" />
+    <PackageReference Include="ITBees.FAS.SatelliteAgents" Version="8.0.108" />
     <PackageReference Include="ITBees.RestfulApiControllers" Version="8.0.22" />
   </ItemGroup>
 
