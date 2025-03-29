@@ -2,6 +2,7 @@
 using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Interfaces.ViewModels;
 using ITBees.FAS.SatelliteAgents.Database;
+using ITBees.FAS.SatelliteAgents.Services;
 using ITBees.Interfaces.Repository;
 using ITBees.Models.Hardware;
 using ITBees.Models.Hardware.Infrastructure;
@@ -106,6 +107,7 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
 
             var firstSeenDate = awaitingAgent.LastConnectedDate;
 
+            var generateRandomString = SecretKeyGenerator.GenerateRandomString(200);
             _authorizedAgentRwRepo.InsertData(new AuthorizedAgent()
             {
                 Mac = authorizeDeviceIm.Mac,
@@ -117,12 +119,12 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
                 DisplayName = authorizeDeviceIm.DeviceName,
                 LastConnectedDate = firstSeenDate,
                 DeviceGuid = device.Guid,
-                SecretKey = string.Empty,
+                SecretKey = generateRandomString,
                 SystemInformation = systemInformation,
                 DeviceTypeId = authorizeDeviceIm.DeviceTypeId,
-                IpAddressId = ip.Id
+                IpAddressId = ip.Id,
             });
-
+            
             return result;
         }
         catch (Exception e)
