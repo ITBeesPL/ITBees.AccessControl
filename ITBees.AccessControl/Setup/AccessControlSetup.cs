@@ -21,7 +21,7 @@ namespace ITBees.AccessControl.Setup
         {
             services.AddScoped<IAccessControlSignalReceived, AccessControlSignalReceived>();
             services.AddScoped<IUnauthorizedRfidDevicesService, UnauthorizedRfidDevicesService>();
-            services.AddScoped<IAuthorizeRfidDeviceService, AuthorizeDeviceService>();
+            // services.AddScoped<IAuthorizeRfidDeviceService, AuthorizeDeviceService>();
             services.AddScoped<IAuthorizeAccessCardsService, AuthorizeAccessCardsService>();
             services.AddScoped<IAllowedCardsService, AllowedCardsService>();
             services.AddScoped<IAccessCardsService, AccessCardsService>();
