@@ -13,7 +13,7 @@
     <PackageReference Include="ITBees.Models" Version="8.0.82" />
     <PackageReference Include="ITBees.UserManager" Version="8.0.298" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="ITBees.FAS.SatelliteAgents" Version="8.0.127" />
+    <PackageReference Include="ITBees.FAS.SatelliteAgents" Version="8.0.128" />
     <PackageReference Include="ITBees.RestfulApiControllers" Version="8.0.22" />
   </ItemGroup>
 
