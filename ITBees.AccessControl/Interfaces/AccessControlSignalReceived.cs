@@ -1,5 +1,6 @@
 ﻿using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Interfaces.ViewModels;
+using ITBees.FAS.SatelliteAgents.Database;
 using ITBees.FAS.SatelliteAgents.Interfaces;
 using ITBees.Interfaces.Repository;
 using ITBees.Models.Hardware;
@@ -14,13 +15,13 @@ class AccessControlSignalReceived : IAccessControlSignalReceived
     private readonly IWriteOnlyRepository<UnauthorizedAccessCardLog> _unauthorizedAccessCardLog;
     private readonly IReadOnlyRepository<RfidReaderDevice> _rfidReaderDeviceRoRepo;
     private readonly IUnauthorizedRfidDevicesService _unauthorizedRfidDevicesService;
-    private readonly IHelloService _helloService;
+    private readonly IHelloService<AuthorizedAgentBase> _helloService;
 
     public AccessControlSignalReceived(IReadOnlyRepository<AccessCard> accessCardRoRepo,
         IWriteOnlyRepository<UnauthorizedAccessCardLog> unauthorizedAccessCardLog,
         IReadOnlyRepository<RfidReaderDevice> rfidReaderDeviceRoRepo,
         IUnauthorizedRfidDevicesService unauthorizedRfidDevicesService, 
-        IHelloService helloService)
+        IHelloService<AuthorizedAgentBase> helloService)
     {
         _accessCardRoRepo = accessCardRoRepo;
         _unauthorizedAccessCardLog = unauthorizedAccessCardLog;
