@@ -1,6 +1,8 @@
-﻿namespace ITBees.AccessControl.Controllers.PlatformOperator.Models;
+﻿using ITBees.RestClient.Interfaces.RestModelMarkup;
 
-public class AccessCardStatusVm
+namespace ITBees.AccessControl.Controllers.PlatformOperator.Models;
+
+public class AccessCardStatusVm : Vm
 {
     public bool IsAllowedToActivate { get; set; }
     public bool IsAlreadyActivated { get; set; }
