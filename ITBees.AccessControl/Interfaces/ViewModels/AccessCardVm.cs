@@ -1,8 +1,9 @@
 ﻿using ITBees.AccessControl.Controllers.PlatformInfrastructure;
+using ITBees.RestClient.Interfaces.RestModelMarkup;
 
 namespace ITBees.AccessControl.Interfaces.ViewModels;
 
-public class AccessCardVm
+public class AccessCardVm : Vm
 {
     public Guid Guid { get; set; }
     public string  CardId { get; set; }
