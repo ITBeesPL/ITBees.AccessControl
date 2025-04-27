@@ -1,5 +1,4 @@
-﻿using ITBees.AccessControl.Controllers.PlatformAdmin;
-using ITBees.AccessControl.Controllers.PlatformAdmin.Models;
+﻿using ITBees.AccessControl.Controllers.PlatformAdmin.Models;
 using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Interfaces.ViewModels;
 using ITBees.AccessControl.Services;

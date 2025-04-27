@@ -21,6 +21,8 @@ public class AccessCardStatusService : IAccessCardStatusService
     }
     public AccessCardStatusVm Check(string cardId)
     {
+        cardId = RfidCardHexConverter.GetHexFormat(cardId);
+        
         if (_allowedAccessCardRoRepo.GetData(x => x.CardId == cardId).FirstOrDefault() == null)
         {
             return new AccessCardStatusVm()

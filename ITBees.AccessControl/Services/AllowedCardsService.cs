@@ -2,6 +2,7 @@
 using ITBees.AccessControl.Interfaces;
 using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Interfaces.ViewModels;
+using ITBees.AccessControl.Services.PlatformOperator;
 using ITBees.Interfaces.Repository;
 using ITBees.RestfulApiControllers.Exceptions;
 using ITBees.RestfulApiControllers.Models;
@@ -34,7 +35,7 @@ public class AllowedCardsService : IAllowedCardsService
             {
                 result.Add(_allowedAccessCardRwRepo.InsertData(new AllowedAccessCard()
                 {
-                    CardId = allowedAccessCardIm.CardId,
+                    CardId = RfidCardHexConverter.GetHexFormat(allowedAccessCardIm.CardId),
                     CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,
                     Created = DateTime.Now,
                     AccessCardTypeId = allowedAccessCardIm.AccessCardTypeId,
@@ -60,6 +61,7 @@ public class AllowedCardsService : IAllowedCardsService
 
     public IsCardAllowedResult IsCardAllowedToAuthorize(string cardId)
     {
+        cardId = RfidCardHexConverter.GetHexFormat(cardId);
         var card = _allowedAccessCardRoRepo.GetData(x => x.CardId == cardId).FirstOrDefault();
         if (card == null)
         {

@@ -1,6 +1,6 @@
-﻿using Google.Apis.Logging;
-using ITBees.AccessControl.Interfaces;
+﻿using ITBees.AccessControl.Interfaces;
 using ITBees.AccessControl.Interfaces.ViewModels;
+using ITBees.AccessControl.Services.PlatformOperator;
 using ITBees.Interfaces.Repository;
 using ITBees.Models.Hardware;
 using ITBees.RestfulApiControllers.Exceptions;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ITBees.AccessControl.Services;
 
-class AuthorizeAccessCardsService : IAuthorizeAccessCardsService
+public class AuthorizeAccessCardsService : IAuthorizeAccessCardsService
 {
     private readonly IAllowedCardsService _allowedCardsService;
     private readonly IWriteOnlyRepository<AccessCard> _accessCardRwRepo;
@@ -45,7 +45,7 @@ class AuthorizeAccessCardsService : IAuthorizeAccessCardsService
                 {
                     var resultAccessCard = _accessCardRwRepo.InsertData(new AccessCard()
                     {
-                        CardId = accessCard.CardId,
+                        CardId = RfidCardHexConverter.GetHexFormat(accessCard.CardId),
                         Created = DateTime.Now,
                         IsActive = accessCard.IsActive,
                         CreatedByGuid = _aspCurrentUserService.GetCurrentUserGuid().Value,

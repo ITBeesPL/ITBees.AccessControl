@@ -1,5 +1,6 @@
 ﻿using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Interfaces.ViewModels;
+using ITBees.AccessControl.Services.PlatformOperator;
 using ITBees.FAS.SatelliteAgents.Database;
 using ITBees.FAS.SatelliteAgents.Interfaces;
 using ITBees.Interfaces.Repository;
@@ -20,7 +21,7 @@ class AccessControlSignalReceived : IAccessControlSignalReceived
     public AccessControlSignalReceived(IReadOnlyRepository<AccessCard> accessCardRoRepo,
         IWriteOnlyRepository<UnauthorizedAccessCardLog> unauthorizedAccessCardLog,
         IReadOnlyRepository<RfidReaderDevice> rfidReaderDeviceRoRepo,
-        IUnauthorizedRfidDevicesService unauthorizedRfidDevicesService, 
+        IUnauthorizedRfidDevicesService unauthorizedRfidDevicesService,
         IHelloService<AuthorizedAgentBase> helloService)
     {
         _accessCardRoRepo = accessCardRoRepo;
@@ -44,7 +45,13 @@ class AccessControlSignalReceived : IAccessControlSignalReceived
                 Mac = receivedRfidSignalIm.Mac
             });
 
-            _helloService.WelcomeAgent(new HelloIm() { Mac = receivedRfidSignalIm.Mac, SystemInformation = $"RFID Reader {receivedRfidSignalIm.Name} / IP {receivedRfidSignalIm.Ip} MachineName: {receivedRfidSignalIm.Name};", DeviceType = "RfidReader"});
+            _helloService.WelcomeAgent(new HelloIm()
+            {
+                Mac = receivedRfidSignalIm.Mac,
+                SystemInformation =
+                    $"RFID Reader {receivedRfidSignalIm.Name} / IP {receivedRfidSignalIm.Ip} MachineName: {receivedRfidSignalIm.Name};",
+                DeviceType = "RfidReader"
+            });
 
             throw new ResultNotFoundException("Rfid device is not authorized.");
         }
@@ -54,11 +61,12 @@ class AccessControlSignalReceived : IAccessControlSignalReceived
             throw new ResultNotFoundException("Rfid device is not authorized hardware address incorrect.");
         }
 
-        var savedAccessCard = _accessCardRoRepo.GetFirst(x => x.CardId == receivedRfidSignalIm.Id);
+        var cardId = RfidCardHexConverter.GetHexFormat(receivedRfidSignalIm.Id);
+        var savedAccessCard = _accessCardRoRepo.GetFirst(x => x.CardId == cardId);
         if (savedAccessCard == null)
         {
             var message = "Card not found";
-            LogCardRequestInactive(receivedRfidSignalIm,rfidDevice.Guid,message);
+            LogCardRequestInactive(receivedRfidSignalIm, rfidDevice.Guid, message);
             throw new UnauthorizedAccessException(message);
         }
 
@@ -79,7 +87,8 @@ class AccessControlSignalReceived : IAccessControlSignalReceived
         return new AccessRequestResultVm() { Message = "ok" };
     }
 
-    private void LogCardRequestInactive(ReceivedRfidSignalIm receivedRfidSignalIm, Guid connectedTroughRfidReaderDeviceGuid, string message)
+    private void LogCardRequestInactive(ReceivedRfidSignalIm receivedRfidSignalIm,
+        Guid connectedTroughRfidReaderDeviceGuid, string message)
     {
         _unauthorizedAccessCardLog.InsertData(new UnauthorizedAccessCardLog()
         {
