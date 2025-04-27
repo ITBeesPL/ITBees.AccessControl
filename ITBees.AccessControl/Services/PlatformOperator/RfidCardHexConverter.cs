@@ -6,7 +6,7 @@ public static class RfidCardHexConverter
     {
         if (IsDecimal(cardId))
         {
-            return DecimalToHex(cardId);
+            return NormalizeUid(DecimalToHex(cardId));
         }
 
         return cardId;
@@ -20,6 +20,11 @@ public static class RfidCardHexConverter
                 return false;
         }
         return true;
+    }
+    
+    static string NormalizeUid(string uid)
+    {
+        return uid.PadLeft(14, '0');
     }
 
     static string DecimalToHex(string decimalString)
