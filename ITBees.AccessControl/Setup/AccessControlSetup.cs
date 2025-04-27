@@ -1,6 +1,7 @@
 ﻿using ITBees.AccessControl.Interfaces;
 using ITBees.AccessControl.Interfaces.Models;
 using ITBees.AccessControl.Services;
+using ITBees.AccessControl.Services.Audit;
 using ITBees.AccessControl.Services.Common;
 using ITBees.AccessControl.Services.PlatformAdmin;
 using ITBees.AccessControl.Services.PlatformOperator;
@@ -39,6 +40,8 @@ namespace ITBees.AccessControl.Setup
     {
         public static void Register(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AuditLog>().HasKey(x => x.Id);
+            modelBuilder.Entity<AuditLogType>().HasKey(x => x.Id);
             modelBuilder.Entity<AcGroup>().HasKey(x => x.Guid);
             modelBuilder.Entity<AcGroupAccessCards>().HasKey(x => new { x.AcGroupGuid, x.AccessCardGuid });
             modelBuilder.Entity<AccessCardType>().HasKey(x => x.Id);
