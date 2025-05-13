@@ -12,7 +12,7 @@ public static class RfidCardHexConverter
         return cardId;
     }
 
-    static bool IsDecimal(string input)
+    public static bool IsDecimal(string input)
     {
         foreach (char c in input)
         {
@@ -27,7 +27,7 @@ public static class RfidCardHexConverter
         return uid.PadLeft(14, '0');
     }
 
-    static string DecimalToHex(string decimalString)
+    public static string DecimalToHex(string decimalString)
     {
         if (ulong.TryParse(decimalString, out ulong dec))
         {
