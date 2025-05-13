@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace ITBees.AccessControl.Services.PlatformOperator;
 
 public static class RfidCardHexConverter
@@ -10,6 +12,14 @@ public static class RfidCardHexConverter
         }
 
         return cardId;
+    }
+    
+    public static bool IsHex(string input)
+    {
+        if (string.IsNullOrEmpty(input)) return false;
+        
+        var match = Regex.Match(input, @"^[A-Fa-f0-9]{8,16}[xy]?$");
+        return match.Success;
     }
 
     public static bool IsDecimal(string input)
