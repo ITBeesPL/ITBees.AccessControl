@@ -51,4 +51,16 @@ public class AccessCardStatusService : IAccessCardStatusService
             };
         }
     }
+
+    public IsCardAllowedResult IsCardAllowedToAuthorize(string cardId)
+    {
+        cardId = RfidCardHexConverter.GetHexFormat(cardId);
+        var card = _allowedAccessCardRoRepo.GetData(x => x.CardId == cardId).FirstOrDefault();
+        if (card == null)
+        {
+            return new IsCardAllowedResult() { Allowed = false, CardGuid = null , AccessCardTypeId = card.AccessCardTypeId};
+        }
+
+        return new IsCardAllowedResult() { Allowed = true, CardGuid = card.Guid , AccessCardTypeId = card.AccessCardTypeId };
+    }
 }
