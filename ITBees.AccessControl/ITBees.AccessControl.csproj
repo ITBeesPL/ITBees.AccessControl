@@ -14,7 +14,7 @@
     <PackageReference Include="ITBees.UserManager" Version="8.0.305" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="ITBees.FAS.SatelliteAgents" Version="8.0.146" />
+    <PackageReference Include="ITBees.FAS.SatelliteAgents" Version="8.0.147" />
     <PackageReference Include="ITBees.RestfulApiControllers" Version="8.0.24" />
   </ItemGroup>
 
