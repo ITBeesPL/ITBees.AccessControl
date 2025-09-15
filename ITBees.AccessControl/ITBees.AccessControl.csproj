@@ -11,11 +11,11 @@
     <PackageReference Include="ITBees.Fas.Setup" Version="8.0.15" />
     <PackageReference Include="ITBees.Interfaces" Version="8.0.63" />
     <PackageReference Include="ITBees.Models" Version="8.0.88" />
-    <PackageReference Include="ITBees.Translations" Version="8.0.131" />
+    <PackageReference Include="ITBees.Translations" Version="8.0.132" />
     <PackageReference Include="ITBees.UserManager" Version="8.0.313" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="ITBees.FAS.SatelliteAgents" Version="8.0.153" />
+    <PackageReference Include="ITBees.FAS.SatelliteAgents" Version="8.0.154" />
     <PackageReference Include="ITBees.RestfulApiControllers" Version="8.0.25" />
   </ItemGroup>
 
