@@ -10,4 +10,5 @@ public class AuthorizeDeviceIm
     public Guid? BuildingGuid { get; set; }
     public int IpNetworkAddressId { get; set; }
     public string TriggerApiEndpoint { get; set; }
+    public string? SoftwareVersion { get; set; }
 }
