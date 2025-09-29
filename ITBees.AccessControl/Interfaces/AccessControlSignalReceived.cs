@@ -50,7 +50,8 @@ class AccessControlSignalReceived : IAccessControlSignalReceived
                 Mac = receivedRfidSignalIm.Mac,
                 SystemInformation =
                     $"RFID Reader {receivedRfidSignalIm.Name} / IP {receivedRfidSignalIm.Ip} MachineName: {receivedRfidSignalIm.Name};",
-                DeviceType = "RfidReader"
+                DeviceType = "RfidReader",
+                SoftwareVersion = HostAppVersionHelper.GetHostAppFileVersion()
             });
 
             throw new ResultNotFoundException("Rfid device is not authorized.");
