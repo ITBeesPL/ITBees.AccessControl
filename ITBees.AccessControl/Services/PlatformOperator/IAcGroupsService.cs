@@ -1,5 +1,5 @@
-﻿using ITBees.AccessControl.Interfaces.ViewModels;
-using ITBees.Interfaces.Repository;
+﻿using ITBees.Interfaces.Repository;
+using ITBees.Models.Hardware.Ac;
 using ITBees.UserManager.Controllers.Models;
 
 namespace ITBees.AccessControl.Services.PlatformOperator;

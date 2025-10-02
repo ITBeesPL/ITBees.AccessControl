@@ -14,13 +14,13 @@ public class AuthorizeAccessCardsService : IAuthorizeAccessCardsService
 {
     private readonly IAllowedCardsService _allowedCardsService;
     private readonly IWriteOnlyRepository<AccessCard> _accessCardRwRepo;
-    private readonly IWriteOnlyRepository<AccessCardCardGroup> _accessCardCardGroupRwRepo;
+    private readonly IWriteOnlyRepository<AcGroupAccessCards> _accessCardCardGroupRwRepo;
     private readonly IAspCurrentUserService _aspCurrentUserService;
     private readonly ILogger<AuthorizeAccessCardsService> _logger;
 
     public AuthorizeAccessCardsService(IAllowedCardsService allowedCardsService,
         IWriteOnlyRepository<AccessCard> accessCardRwRepo,
-        IWriteOnlyRepository<AccessCardCardGroup> accessCardCardGroupRwRepo,
+        IWriteOnlyRepository<AcGroupAccessCards> accessCardCardGroupRwRepo,
         IAspCurrentUserService aspCurrentUserService,
         ILogger<AuthorizeAccessCardsService> logger)
     {
@@ -63,9 +63,9 @@ public class AuthorizeAccessCardsService : IAuthorizeAccessCardsService
                     {
                         if (accessCard.AcGroupGuids != null || accessCard.AcGroupGuids.Any())
                         {
-                            var accessCardCardGroups = accessCard.AcGroupGuids.Select(x => new AccessCardCardGroup()
+                            var accessCardCardGroups = accessCard.AcGroupGuids.Select(x => new AcGroupAccessCards()
                             {
-                                AccessCardGroupGuid = x,
+                                AcGroupGuid = x,
                                 AccessCardGuid = resultAccessCard.Guid
                             }).ToList();
 

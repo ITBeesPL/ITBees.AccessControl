@@ -47,8 +47,6 @@ namespace ITBees.AccessControl.Setup
             modelBuilder.Entity<AccessCardType>().HasKey(x => x.Id);
             modelBuilder.Entity<AccessCard>().HasKey(x => x.Guid);
             modelBuilder.Entity<AccessCard>().HasIndex(x => x.CardId).IsUnique();
-            modelBuilder.Entity<AccessCardGroup>().HasKey(x => x.Guid);
-            modelBuilder.Entity<AccessCardCardGroup>().HasKey(x => x.Guid);
             modelBuilder.Entity<AllowedAccessCard>().HasKey(x => x.Guid);
             modelBuilder.Entity<AllowedAccessCard>().HasIndex(x => x.CardId).IsUnique();
             modelBuilder.Entity<RfidReaderDevice>().HasKey(x => x.Guid);
@@ -56,8 +54,6 @@ namespace ITBees.AccessControl.Setup
             modelBuilder.Entity<UnauthorizedAccessCardLog>().HasKey(x => x.Id);
             modelBuilder.Entity<UnauthorizedRfidDevice>().HasKey(x => x.Guid);
             modelBuilder.Entity<UnauthorizedRfidDevice>().HasIndex(x => x.Mac).IsUnique();
-            //modelBuilder.Entity<DeviceHub>().HasDiscriminator<string>("DeviceType")
-            //    .HasValue<PhysicalDeviceHub>(nameof(PhysicalDeviceHub) + "Type");
         }
     }
 }

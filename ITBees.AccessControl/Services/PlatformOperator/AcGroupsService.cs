@@ -1,6 +1,6 @@
-﻿using ITBees.AccessControl.Interfaces.Models;
-using ITBees.AccessControl.Interfaces.ViewModels;
-using ITBees.Interfaces.Repository;
+﻿using ITBees.Interfaces.Repository;
+using ITBees.Models.Hardware;
+using ITBees.Models.Hardware.Ac;
 using ITBees.Models.Users;
 using ITBees.RestfulApiControllers.Exceptions;
 using ITBees.RestfulApiControllers.Models;

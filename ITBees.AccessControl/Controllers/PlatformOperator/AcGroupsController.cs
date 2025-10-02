@@ -1,6 +1,6 @@
-﻿using ITBees.AccessControl.Interfaces.ViewModels;
-using ITBees.AccessControl.Services.PlatformOperator;
+﻿using ITBees.AccessControl.Services.PlatformOperator;
 using ITBees.Interfaces.Repository;
+using ITBees.Models.Hardware.Ac;
 using ITBees.RestfulApiControllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

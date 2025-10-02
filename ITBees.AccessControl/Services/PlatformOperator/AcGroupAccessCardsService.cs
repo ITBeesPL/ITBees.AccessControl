@@ -1,6 +1,6 @@
 ﻿using ITBees.AccessControl.Controllers.PlatformOperator;
-using ITBees.AccessControl.Interfaces.Models;
 using ITBees.Interfaces.Repository;
+using ITBees.Models.Hardware;
 using ITBees.UserManager.Interfaces;
 
 namespace ITBees.AccessControl.Services.PlatformOperator;
@@ -17,6 +17,11 @@ public class AcGroupAccessCardsService : IAcGroupAccessCardsService
     }
     public PaginatedResult<AcGroupAccessCardsVm> GetAll(int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
     {
-        return _accessCardGroupRoRepo.GetDataPaginated(x => true, new SortOptions(page, pageSize, sortColumn, sortOrder), x => x.CreatedBy, x => x.AcGroup, x => x.AccessCard).MapTo(x => new AcGroupAccessCardsVm(x));
+        if (_aspCurrentUserService.CurrentUserIsPlatformOperator())
+        {
+            return _accessCardGroupRoRepo.GetDataPaginated(x => true, new SortOptions(page, pageSize, sortColumn, sortOrder), x => x.CreatedBy, x => x.AcGroup, x => x.AccessCard).MapTo(x => new AcGroupAccessCardsVm(x));
+        }
+        
+        throw new UnauthorizedAccessException("Only Platform Operators can access this data.");
     }
 }

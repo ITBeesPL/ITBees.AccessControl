@@ -1,4 +1,4 @@
-﻿using ITBees.AccessControl.Interfaces.Models;
+﻿using ITBees.Models.Hardware;
 
 namespace ITBees.AccessControl.Controllers.PlatformOperator;
 

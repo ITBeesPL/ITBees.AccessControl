@@ -4,11 +4,11 @@ namespace ITBees.AccessControl.Interfaces.ViewModels;
 
 public class AccessCardGroupVm
 {
-    public AccessCardGroupVm(AccessCardGroup x)
+    public AccessCardGroupVm(AcGroup x)
     {
         Guid = x.Guid;
         Name = x.GroupName;
-        Description = x.GroupDescirption;
+        Description = x.GroupDescription;
     }
 
     public AccessCardGroupVm()
