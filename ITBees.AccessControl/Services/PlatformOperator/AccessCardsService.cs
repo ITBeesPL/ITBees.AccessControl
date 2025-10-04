@@ -43,7 +43,10 @@ class AccessCardsService : IAccessCardsService
             LastUsedDate = ac.LastUsedDateTime,
             OwnerEmail = ac.OwnerEmail,
             OwnerName = ac.OwnerName,
-            ValidTo = ac.ValidDate
+            ValidTo = ac.ValidDate,
+            Created = ac.Created,
+            IsActive = ac.IsActive,
+            Deactivated = ac.Deactivated,
             //todo fix including access cards groups
         });
         return mappedResults;

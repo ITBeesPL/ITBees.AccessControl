@@ -14,4 +14,7 @@ public class AccessCardVm : Vm
     public bool InvitationSend { get; set; }
     public List<AccessCardGroupVm> AccessCardGroups{ get; set; }
     public DateTime ValidTo { get; set; }
+    public DateTime Created { get; set; }
+    public DateTime Deactivated { get; set; }
+    public bool IsActive { get; set; }
 }
