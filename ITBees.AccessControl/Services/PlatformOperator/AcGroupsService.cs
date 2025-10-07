@@ -6,6 +6,7 @@ using ITBees.RestfulApiControllers.Exceptions;
 using ITBees.RestfulApiControllers.Models;
 using ITBees.UserManager.Controllers.Models;
 using ITBees.UserManager.Interfaces;
+using Octopark.Models.ModelsOldSystem;
 
 namespace ITBees.AccessControl.Services.PlatformOperator;
 
@@ -14,15 +15,18 @@ public class AcGroupsService : IAcGroupsService
     private readonly IAspCurrentUserService _aspCurrentUserService;
     private readonly IWriteOnlyRepository<AcGroup> _acGroupRwRepo;
     private readonly IReadOnlyRepository<AcGroup> _acGroupRoRepo;
+    private readonly IReadOnlyRepository<Parking> _parkingRoRepo;
 
     public AcGroupsService(IAspCurrentUserService aspCurrentUserService,
         IWriteOnlyRepository<AcGroup> acGroupRwRepo,
-        IReadOnlyRepository<AcGroup> acGroupRoRepo
+        IReadOnlyRepository<AcGroup> acGroupRoRepo,
+        IReadOnlyRepository<Parking> parkingRoRepo
     )
     {
         _aspCurrentUserService = aspCurrentUserService;
         _acGroupRwRepo = acGroupRwRepo;
         _acGroupRoRepo = acGroupRoRepo;
+        _parkingRoRepo = parkingRoRepo;
     }
 
     public AcGroupVm Get(Guid guid)
@@ -69,10 +73,26 @@ public class AcGroupsService : IAcGroupsService
         return new DeleteResultVm() { Message = "", Success = true };
     }
 
-    public PaginatedResult<AcGroupVm> GetAll(int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
+    public PaginatedResult<AcGroupVm> GetAll(Guid? parkingGuid, int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
     {
-        var cu = _aspCurrentUserService.GetCurrentSessionUser().CurrentUser.LastUsedCompanyGuid;
-        return _acGroupRoRepo.GetDataPaginated(x => x.CompanyGuid == cu, new SortOptions(page, pageSize, sortColumn, sortOrder), x=>x.Company, x=>x.CreatedBy)
-            .MapTo(x => new AcGroupVm(x));
+        Guid cu;
+
+        if (parkingGuid != null)
+        {
+            cu = _parkingRoRepo.GetData(x => x.Guid == parkingGuid.Value)
+                .Select(x => x.CompanyGuid)
+                .FirstOrDefault() ?? _aspCurrentUserService.GetCurrentSessionUser().CurrentUser.LastUsedCompanyGuid;;
+        }
+        else
+        {
+            cu = _aspCurrentUserService.GetCurrentSessionUser().CurrentUser.LastUsedCompanyGuid;
+        }
+
+        return _acGroupRoRepo.GetDataPaginated(
+            x => x.CompanyGuid == cu,
+            new SortOptions(page, pageSize, sortColumn, sortOrder),
+            x => x.Company,
+            x => x.CreatedBy
+        ).MapTo(x => new AcGroupVm(x));
     }
 }

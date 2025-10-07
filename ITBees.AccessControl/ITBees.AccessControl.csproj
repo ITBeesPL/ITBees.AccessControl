@@ -27,6 +27,10 @@
     <Folder Include="Services\PlatformAdmin\Models\" />
     <Folder Include="Translations\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\octoparkapi\Octopark.Models\Octopark.Models.csproj" />
+  </ItemGroup>
   
 <!--  <ItemGroup>-->
 <!--      <ProjectReference Include="..\..\ITBees.FAS.Setup\ITBees.FAS.Setup\ITBees.FAS.Setup.csproj" />-->

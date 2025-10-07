@@ -21,8 +21,8 @@ public class AcGroupsController : RestfulControllerBase<AcGroupsController>
 
     [HttpGet]
     [Produces<PaginatedResult<AcGroupVm>>]
-    public IActionResult Get(int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
+    public IActionResult Get(Guid? parkingGuid, int? page, int? pageSize, string? sortColumn, SortOrder? sortOrder)
     {
-        return ReturnOkResult(() => _acGroupsService.GetAll(page, pageSize, sortColumn, sortOrder));
+        return ReturnOkResult(() => _acGroupsService.GetAll(parkingGuid, page, pageSize, sortColumn, sortOrder));
     }
 }
