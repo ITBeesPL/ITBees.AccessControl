@@ -10,7 +10,7 @@ public interface IAllowedCardsService
 {
     AllowedAccessCardsVm RegisterCard(AllowedAccessCardsIm allowedAccessCardIm);
     IsCardAllowedResult IsCardAllowedToAuthorize(string cardId);
-    PaginatedResult<AllowedAccessCardVm> GetCards(int? page, int? pageSize, AllowedAccessCardSortOptions? sortColumn, SortOrder? sortOrder);
+    PaginatedResult<AllowedAccessCardVm> GetCards(int? page, int? pageSize, AllowedAccessCardSortOptions? sortColumn, SortOrder? sortOrder, string? searchText);
     DeleteAccessCardResultVm Delete(AllowedAccessCardsDm allowedAccessCardsDm);
     void SetCardAsActive(Guid? cardGuid);
     AllowedAccessCardVm UpdateCard(AllowedAccessCardUm allowedAccessCardUm);
