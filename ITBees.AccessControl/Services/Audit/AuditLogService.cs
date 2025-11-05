@@ -14,11 +14,11 @@ public class AuditLogService : IAuditLogService
         _auditLogRwRepo = auditLogRwRepo;
     }
 
-    public void SaveAuditLog(Guid? userAccountGuid,Guid? companyGuid, int auditLogTypeId, string action, string description,
+    public int SaveAuditLog(Guid? userAccountGuid,Guid? companyGuid, int auditLogTypeId, string action, string description,
         string entityName, int? entityId,
         Guid? entityGuid)
     {
-        _auditLogRwRepo.InsertData(new AuditLog()
+       var newAuditLog = _auditLogRwRepo.InsertData(new AuditLog()
         {
             UserAccountGuid = userAccountGuid,
             Action = action,
@@ -30,5 +30,7 @@ public class AuditLogService : IAuditLogService
             DateTime = DateTime.UtcNow,
             CompanyGuid = companyGuid,
         });
+
+        return newAuditLog.Id;
     }
 }
