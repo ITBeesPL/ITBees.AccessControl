@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="ITBees.Fas.Setup" Version="8.0.15" />
     <PackageReference Include="ITBees.Interfaces" Version="8.0.65" />
-    <PackageReference Include="ITBees.Models" Version="8.0.91" />
+    <PackageReference Include="ITBees.Models" Version="8.0.93" />
     <PackageReference Include="ITBees.Translations" Version="8.0.137" />
     <PackageReference Include="ITBees.UserManager" Version="8.0.349" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
