@@ -45,7 +45,12 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
         _unauthorizedRfidDeviceRoRepo = unauthorizedRfidDeviceRoRepo;
         _ipAddressRwRepo = ipAddressRwRepo;
     }
+
     public RfidReaderDevice Authorize(AuthorizeDeviceIm authorizeDeviceIm)
+    {
+        return CommonAuthorize(authorizeDeviceIm, null);
+    }
+    private RfidReaderDevice CommonAuthorize(AuthorizeDeviceIm authorizeDeviceIm, Device? preDefinedUnsavedDevice = null)
     {
         try
         {
@@ -93,17 +98,25 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
                 systemInformation = awaitingAgent.SystemInformation;
             }
 
-            var device = _deviceRwRepo.InsertData(new Device()
+            if (preDefinedUnsavedDevice == null)
             {
-                CreatedByGuid = currentUserGuid,
-                CreatedDate = DateTime.Now,
-                Description = systemInformation,
-                DeviceTypeId = authorizeDeviceIm.DeviceTypeId,
-                IsAvailable = true,
-                Name = authorizeDeviceIm.DeviceName,
-                CompanyGuid = authorizeDeviceIm.CompanyGuid,
-                BuildingGuid = authorizeDeviceIm.BuildingGuid
-            });
+                preDefinedUnsavedDevice = _deviceRwRepo.InsertData(new Device()
+                {
+                    CreatedByGuid = currentUserGuid,
+                    CreatedDate = DateTime.Now,
+                    Description = systemInformation,
+                    DeviceTypeId = authorizeDeviceIm.DeviceTypeId,
+                    IsAvailable = true,
+                    Name = authorizeDeviceIm.DeviceName,
+                    CompanyGuid = authorizeDeviceIm.CompanyGuid,
+                    BuildingGuid = authorizeDeviceIm.BuildingGuid
+                });    
+            }
+            else
+            {
+                preDefinedUnsavedDevice = _deviceRwRepo.InsertData(preDefinedUnsavedDevice);
+            }
+            
 
             var firstSeenDate = awaitingAgent.LastConnectedDate;
 
@@ -118,7 +131,7 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
                 Description = authorizeDeviceIm.DeviceName,
                 DisplayName = authorizeDeviceIm.DeviceName,
                 LastConnectedDate = firstSeenDate,
-                DeviceGuid = device.Guid,
+                DeviceGuid = preDefinedUnsavedDevice.Guid,
                 SecretKey = generateRandomString,
                 SystemInformation = systemInformation,
                 DeviceTypeId = authorizeDeviceIm.DeviceTypeId,
@@ -136,5 +149,10 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
 
             throw new FasApiErrorException(new FasApiErrorVm(e.Message, StatusCodes.Status500InternalServerError, ""));
         }
+    }
+
+    public RfidReaderDevice Authorize(AuthorizeDeviceIm authorizeDeviceIm, Device device)
+    {
+        return Authorize(authorizeDeviceIm, device);
     }
 }

@@ -7,4 +7,5 @@ namespace ITBees.AccessControl.Interfaces;
 public interface IAuthorizeRfidDeviceService
 {
     RfidReaderDevice Authorize(AuthorizeDeviceIm authorizeDeviceIm);
+    RfidReaderDevice Authorize(AuthorizeDeviceIm authorizeDeviceIm, Device device);
 }
