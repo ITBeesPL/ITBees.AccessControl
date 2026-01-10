@@ -114,6 +114,7 @@ class AuthorizeDeviceService : IAuthorizeRfidDeviceService
             }
             else
             {
+                preDefinedUnsavedDevice.Description = systemInformation;
                 preDefinedUnsavedDevice = _deviceRwRepo.InsertData(preDefinedUnsavedDevice);
             }
             
