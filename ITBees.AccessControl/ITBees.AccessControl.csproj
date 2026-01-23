@@ -12,7 +12,7 @@
     <PackageReference Include="ITBees.Interfaces" Version="8.0.71" />
     <PackageReference Include="ITBees.Models" Version="8.0.94" />
     <PackageReference Include="ITBees.Translations" Version="8.0.147" />
-    <PackageReference Include="ITBees.UserManager" Version="8.0.367" />
+    <PackageReference Include="ITBees.UserManager" Version="8.0.368" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="ITBees.FAS.SatelliteAgents" Version="8.0.204" />
