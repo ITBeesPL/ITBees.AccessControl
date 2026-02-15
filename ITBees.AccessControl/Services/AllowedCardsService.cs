@@ -71,25 +71,35 @@ public class AllowedCardsService : IAllowedCardsService
         return new IsCardAllowedResult() { Allowed = true, CardGuid = card.Guid , AccessCardTypeId = card.AccessCardTypeId };
     }
 
-    public PaginatedResult<AllowedAccessCardVm> GetCards(int? page, int? pageSize, AllowedAccessCardSortOptions? sortColumn, SortOrder? sortOrder)
+    public PaginatedResult<AllowedAccessCardVm> GetCards(int? page, int? pageSize, AllowedAccessCardSortOptions? sortColumn, SortOrder? sortOrder, string? searchText)
     {
-        PaginatedResult<AllowedAccessCard> results = _allowedAccessCardRoRepo.GetDataPaginated(x => true, new SortOptions(page, pageSize,sortColumn, sortOrder), x => x.CreatedBy, x => x.Company);
+        var so = new SortOptions(page, pageSize, "Created", SortOrder.Descending);
+        
+        PaginatedResult<AllowedAccessCardVm> result;
 
-        var mappedResults = results.MapTo(ac => new AllowedAccessCardVm()
+        if (string.IsNullOrEmpty(searchText))
         {
-            CardId = ac.CardId,
-            Created = ac.Created,
-            CreatedBy = ac.CreatedBy.LastName,
-            CreatedByGuid = ac.CreatedByGuid,
-            Guid = ac.Guid,
-            AccessCardTypeId = ac.AccessCardTypeId,
-            ActivationDate = ac.ActivationDate,
-            CompanyGuid = ac.CompanyGuid,
-            CompanyName = ac.Company?.CompanyName,
-            IsActive = ac.IsActive
-        });
-
-        return mappedResults;
+           result = _allowedAccessCardRoRepo.GetDataPaginated(
+               x => true,
+               so,
+               x => x.CreatedBy,
+               x => x.Company)
+               .MapTo(x => new AllowedAccessCardVm(x));
+        }
+        else
+        {
+            string search = searchText.ToUpper();
+            
+            result = _allowedAccessCardRoRepo.GetDataPaginated(
+                    x => true && 
+                         (x.Company.CompanyName.ToUpper().Contains(search) ||
+                          x.CardId.ToUpper().Contains(search)),
+                    so,
+                    x => x.CreatedBy,
+                    x => x.Company)
+                .MapTo(x => new AllowedAccessCardVm(x));
+        }
+        return result;
     }
 
     public DeleteAccessCardResultVm Delete(AllowedAccessCardsDm allowedAccessCardsDm)
