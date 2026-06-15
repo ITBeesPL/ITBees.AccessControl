@@ -32,9 +32,9 @@ public class AllowedAccessCardsController : RestfulControllerBase<AllowedAccessC
 
     [HttpGet]
     [Produces<PaginatedResult<AllowedAccessCardVm>>]
-    public IActionResult Get(int? page, int? pageSize, AllowedAccessCardSortOptions? sortColumn, SortOrder? sortOrder)
+    public IActionResult Get(int? page, int? pageSize, AllowedAccessCardSortOptions? sortColumn, SortOrder? sortOrder, string? searchText)
     {
-        return ReturnOkResult(() => _allowedCardsService.GetCards(page, pageSize, sortColumn, sortOrder));
+        return ReturnOkResult(() => _allowedCardsService.GetCards(page, pageSize, sortColumn, sortOrder, searchText));
     }
 
     [HttpDelete]
